@@ -1,0 +1,96 @@
+.login-modal-container {
+  position: relative;
+  padding: 16px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.close-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  color: var(--secondary-text-color);
+}
+
+mat-dialog-content {
+  padding-top: 16px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.forgot-password {
+  display: block;
+  text-align: right;
+  margin: 8px 0 16px;
+  font-size: 14px;
+  color: #1976d2;
+  text-decoration: none;
+  
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.submit-button {
+  margin-top: 8px;
+  height: 36px;
+  position: relative;
+  
+  .spinner {
+    margin: 0 auto;
+  }
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 24px 0;
+  
+  &::before, &::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  span {
+    padding: 0 16px;
+    font-size: 14px;
+    color: var(--secondary-text-color);
+  }
+}
+
+.google-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.switch-auth-mode {
+  margin-top: 24px;
+  text-align: center;
+  
+  p {
+    font-size: 14px;
+    margin: 0;
+  }
+  
+  a {
+    color: #1976d2;
+    font-weight: 500;
+    text-decoration: none;
+    
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

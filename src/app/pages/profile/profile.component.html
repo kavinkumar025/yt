@@ -1,0 +1,114 @@
+<div class="profile-container" *ngIf="user">
+  <div class="channel-header">
+    <div class="channel-banner" [style.background-color]="bannerColor"></div>
+    
+    <div class="channel-info">
+      <div class="channel-details">
+        <img [src]="user.photoURL" [alt]="user.displayName" class="channel-avatar">
+        <div class="channel-metadata">
+          <h1 class="channel-name">{{ user.displayName }}</h1>
+          <p class="channel-stats">
+            {{ formatSubscribers(user.subscribers || 0) }} subscribers
+          </p>
+        </div>
+      </div>
+      
+      <div class="channel-actions">
+        <button mat-raised-button color="primary" (click)="openUploadModal()">
+          <mat-icon>cloud_upload</mat-icon>
+          UPLOAD
+        </button>
+      </div>
+    </div>
+    
+    <div class="channel-tabs">
+      <button 
+        mat-button 
+        [class.active]="activeTab === 'videos'"
+        (click)="setActiveTab('videos')"
+      >
+        VIDEOS
+      </button>
+      <button 
+        mat-button 
+        [class.active]="activeTab === 'documents'"
+        (click)="setActiveTab('documents')"
+      >
+        DOCUMENTS
+      </button>
+    </div>
+  </div>
+  
+  <div class="channel-content">
+    <!-- Videos Tab -->
+    <div class="tab-content" *ngIf="activeTab === 'videos'">
+      <app-loading-skeleton 
+        *ngIf="isLoadingVideos" 
+        [count]="4" 
+        type="video"
+      ></app-loading-skeleton>
+      
+      <div class="content-grid" *ngIf="!isLoadingVideos">
+        <div class="empty-state" *ngIf="userVideos.length === 0">
+          <mat-icon>videocam_off</mat-icon>
+          <h2>No videos yet</h2>
+          <p>Your uploaded videos will appear here</p>
+          <button mat-raised-button color="primary" (click)="openUploadModal()">
+            UPLOAD VIDEO
+          </button>
+        </div>
+        
+        <div class="video-item" *ngFor="let video of userVideos">
+          <app-video-card [video]="video"></app-video-card>
+          <button 
+            mat-icon-button 
+            class="delete-button" 
+            (click)="deleteVideo(video, $event)"
+            matTooltip="Delete video"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Documents Tab -->
+    <div class="tab-content" *ngIf="activeTab === 'documents'">
+      <app-loading-skeleton 
+        *ngIf="isLoadingDocuments" 
+        [count]="4" 
+        type="document"
+      ></app-loading-skeleton>
+      
+      <div class="content-grid" *ngIf="!isLoadingDocuments">
+        <div class="empty-state" *ngIf="userDocuments.length === 0">
+          <mat-icon>insert_drive_file</mat-icon>
+          <h2>No documents yet</h2>
+          <p>Your uploaded documents will appear here</p>
+          <button mat-raised-button color="primary" (click)="openUploadModal()">
+            UPLOAD DOCUMENT
+          </button>
+        </div>
+        
+        <div class="document-item" *ngFor="let document of userDocuments">
+          <app-document-card [document]="document"></app-document-card>
+          <button 
+            mat-icon-button 
+            class="delete-button" 
+            (click)="deleteDocument(document, $event)"
+            matTooltip="Delete document"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="not-signed-in" *ngIf="!(authService.currentUser$ | async)">
+  <mat-icon>account_circle</mat-icon>
+  <h2>Sign in to view your channel</h2>
+  <p>All your uploads, likes, and subscriptions in one place</p>
+  <button mat-raised-button color="primary">SIGN IN</button>
+</div>

@@ -1,0 +1,135 @@
+<div class="home-container">
+  <!-- Loading indicator -->
+  <div class="loading-container" *ngIf="loading">
+    <mat-spinner color="accent"></mat-spinner>
+  </div>
+
+  <!-- Main video grid -->
+  <div class="video-section" *ngIf="!loading">
+    <!-- Trending videos section -->
+    <div class="section-header">
+      <h2>Trending</h2>
+    </div>
+    
+    <div class="video-grid">
+      <div class="video-card" *ngFor="let video of trendingVideos">
+        <a [routerLink]="['/video', video.id]" class="video-thumbnail">
+          <img [src]="video.thumbnailURL || 'assets/placeholder-thumbnail.jpg'" [alt]="video.title">
+          <span class="video-duration">{{ video.duration }}</span>
+          
+          <!-- Cast button -->
+          <button mat-icon-button class="cast-button" (click)="$event.stopPropagation(); castVideo(video)" *ngIf="castService.isCastApiAvailable()">
+            <mat-icon>cast</mat-icon>
+          </button>
+        </a>
+        
+        <div class="video-info">
+          <a [routerLink]="['/channel', video.userId]" class="channel-avatar">
+            <img [src]="video.userPhotoURL || 'assets/default-avatar.png'" [alt]="video.userName">
+          </a>
+          
+          <div class="video-details">
+            <a [routerLink]="['/video', video.id]" class="video-title">{{ video.title }}</a>
+            <a [routerLink]="['/channel', video.userId]" class="channel-name">{{ video.userName }}</a>
+            <div class="video-meta">
+              <span>{{ formatViewCount(video.stats.views) }} views</span>
+              <span class="dot-separator">•</span>
+              <span>{{ formatTimeAgo(video.createdAt) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Recommended videos section -->
+    <div class="section-header">
+      <h2>Recommended</h2>
+    </div>
+    
+    <div class="video-grid">
+      <div class="video-card" *ngFor="let video of recommendedVideos">
+        <a [routerLink]="['/video', video.id]" class="video-thumbnail">
+          <img [src]="video.thumbnailURL || 'assets/placeholder-thumbnail.jpg'" [alt]="video.title">
+          <span class="video-duration">{{ video.duration }}</span>
+          
+          <!-- Cast button -->
+          <button mat-icon-button class="cast-button" (click)="$event.stopPropagation(); castVideo(video)" *ngIf="castService.isCastApiAvailable()">
+            <mat-icon>cast</mat-icon>
+          </button>
+        </a>
+        
+        <div class="video-info">
+          <a [routerLink]="['/channel', video.userId]" class="channel-avatar">
+            <img [src]="video.userPhotoURL || 'assets/default-avatar.png'" [alt]="video.userName">
+          </a>
+          
+          <div class="video-details">
+            <a [routerLink]="['/video', video.id]" class="video-title">{{ video.title }}</a>
+            <a [routerLink]="['/channel', video.userId]" class="channel-name">{{ video.userName }}</a>
+            <div class="video-meta">
+              <span>{{ formatViewCount(video.stats.views) }} views</span>
+              <span class="dot-separator">•</span>
+              <span>{{ formatTimeAgo(video.createdAt) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Celebrity videos section (for normal users) -->
+    <div class="section-header" *ngIf="celebrityVideos.length > 0 && (userRole$ | async) === 'normal'">
+      <h2>From Your Favorite Celebrities</h2>
+    </div>
+    
+    <div class="video-grid" *ngIf="celebrityVideos.length > 0 && (userRole$ | async) === 'normal'">
+      <div class="video-card" *ngFor="let video of celebrityVideos">
+        <a [routerLink]="['/video', video.id]" class="video-thumbnail">
+          <img [src]="video.thumbnailURL || 'assets/placeholder-thumbnail.jpg'" [alt]="video.title">
+          <span class="video-duration">{{ video.duration }}</span>
+          
+          <!-- Cast button -->
+          <button mat-icon-button class="cast-button" (click)="$event.stopPropagation(); castVideo(video)" *ngIf="castService.isCastApiAvailable()">
+            <mat-icon>cast</mat-icon>
+          </button>
+        </a>
+        
+        <div class="video-info">
+          <a [routerLink]="['/channel', video.userId]" class="channel-avatar">
+            <img [src]="video.userPhotoURL || 'assets/default-avatar.png'" [alt]="video.userName">
+          </a>
+          
+          <div class="video-details">
+            <a [routerLink]="['/video', video.id]" class="video-title">{{ video.title }}</a>
+            <a [routerLink]="['/channel', video.userId]" class="channel-name">
+              {{ video.userName }}
+              <mat-icon class="star-icon">star</mat-icon>
+            </a>
+            <div class="video-meta">
+              <span>{{ formatViewCount(video.stats.views) }} views</span>
+              <span class="dot-separator">•</span>
+              <span>{{ formatTimeAgo(video.createdAt) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cast overlay when casting is active -->
+  <div class="cast-overlay" *ngIf="castService.castingActive$ | async">
+    <div class="cast-info">
+      <mat-icon class="cast-icon">cast_connected</mat-icon>
+      <div class="cast-text">
+        <p>Casting to <strong>{{ castService.castReceiverName$ | async }}</strong></p>
+        <div class="cast-controls">
+          <button mat-icon-button (click)="castService.togglePlayPause()">
+            <mat-icon>play_arrow</mat-icon>
+          </button>
+          <button mat-icon-button (click)="castService.stopCasting()">
+            <mat-icon>stop</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

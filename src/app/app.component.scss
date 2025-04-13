@@ -1,0 +1,84 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+// Main container
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: white;
+  
+  // Dark theme
+  &.dark-theme {
+    background-color: #181818;
+    color: white;
+  }
+}
+
+// Main content wrapper with sidebar and content
+.main-wrapper {
+  display: flex;
+  flex: 1;
+}
+
+// Content area
+.content-area {
+  flex: 1;
+  margin-left: 72px; // Width of collapsed sidebar
+  transition: margin-left 0.2s ease;
+  
+  // When sidebar is expanded
+  &.expanded {
+    margin-left: 240px; // Width of expanded sidebar
+  }
+  
+  @media (max-width: 768px) {
+    margin-left: 0;
+    
+    &.expanded {
+      margin-left: 0;
+    }
+  }
+}
+
+// Mobile sidebar overlay (darkens the background)
+.mobile-sidebar-overlay {
+  position: fixed;
+  top: 56px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 89;
+}
+
+// Mobile sidebar container
+.mobile-sidebar-container {
+  position: fixed;
+  top: 56px;
+  bottom: 0;
+  left: -240px;
+  width: 240px;
+  z-index: 90;
+  transition: left 0.3s ease;
+  
+  &.open {
+    left: 0;
+  }
+}
+
+// Theme toggle button
+.theme-toggle {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 80;
+  background-color: #0f0f0f;
+  
+  :host-context(.dark-theme) & {
+    background-color: #3ea6ff;
+    color: #0f0f0f;
+  }
+}

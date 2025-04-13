@@ -1,0 +1,71 @@
+.mini-sidebar {
+  position: fixed;
+  top: 56px;
+  bottom: 0;
+  left: 0;
+  width: 72px;
+  background-color: var(--background-color);
+  border-right: 1px solid var(--border-color);
+  overflow-y: auto;
+  transition: background-color 0.3s, border-color 0.3s;
+  z-index: 5;
+  display: none;
+
+  @media (min-width: 768px) {
+    display: block;
+  }
+}
+
+.mini-sidebar-content {
+  padding: 12px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mini-sidebar-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--text-color);
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  &.active {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  mat-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+    margin-bottom: 6px;
+    color: var(--text-color);
+  }
+
+  span {
+    font-size: 10px;
+    text-align: center;
+  }
+}
+
+// Dark theme overrides
+:host-context(.dark-theme) {
+  .mini-sidebar-item {
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    &.active {
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+  }
+}

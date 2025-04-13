@@ -1,0 +1,418 @@
+.player-page-container {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  max-width: 1800px;
+  margin: 0 auto;
+  
+  @media (min-width: 1024px) {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+.player-content {
+  flex: 1;
+  
+  @media (min-width: 1024px) {
+    margin-right: 24px;
+    width: calc(100% - 400px);
+  }
+}
+
+.recommendations {
+  width: 100%;
+  
+  @media (min-width: 1024px) {
+    width: 400px;
+    flex-shrink: 0;
+  }
+}
+
+.recommendations-title {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 16px;
+  padding-left: 8px;
+  display: none;
+  
+  @media (min-width: 1024px) {
+    display: block;
+  }
+}
+
+.player-skeleton {
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.video-skeleton {
+  width: 100%;
+  aspect-ratio: 16/9;
+  margin-bottom: 16px;
+  border-radius: 8px;
+}
+
+.title-skeleton {
+  height: 24px;
+  width: 90%;
+  margin-bottom: 12px;
+  border-radius: 4px;
+}
+
+.channel-skeleton {
+  height: 40px;
+  width: 60%;
+  margin-bottom: 16px;
+  border-radius: 4px;
+}
+
+.description-skeleton {
+  height: 80px;
+  width: 100%;
+  border-radius: 4px;
+}
+
+.player-container {
+  margin-bottom: 24px;
+}
+
+.video-wrapper {
+  width: 100%;
+  background-color: #000;
+  position: relative;
+  aspect-ratio: 16/9;
+  margin-bottom: 16px;
+}
+
+.video-player {
+  width: 100%;
+  height: 100%;
+  outline: none;
+}
+
+.video-info {
+  margin-bottom: 12px;
+}
+
+.video-title {
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0 0 8px 0;
+  line-height: 1.4;
+  color: var(--text-color);
+}
+
+.video-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  
+  @media (min-width: 768px) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.views-date {
+  color: var(--secondary-text-color);
+  font-size: 14px;
+}
+
+.video-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  
+  button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    
+    &.active {
+      color: #065fd4;
+    }
+    
+    span {
+      font-size: 12px;
+      margin-top: 4px;
+      color: var(--secondary-text-color);
+    }
+    
+    &.active span {
+      color: #065fd4;
+    }
+  }
+}
+
+mat-divider {
+  margin: 16px 0;
+}
+
+.channel-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.channel-details {
+  display: flex;
+  align-items: center;
+}
+
+.channel-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  margin-right: 12px;
+  object-fit: cover;
+}
+
+.channel-metadata {
+  display: flex;
+  flex-direction: column;
+}
+
+.channel-name {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0 0 4px 0;
+  color: var(--text-color);
+}
+
+.subscriber-count {
+  font-size: 14px;
+  color: var(--secondary-text-color);
+  margin: 0;
+}
+
+.subscribe-button {
+  text-transform: uppercase;
+  font-weight: 500;
+  
+  &.subscribed {
+    background-color: #F1F1F1;
+    color: var(--text-color);
+  }
+}
+
+.video-description {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 16px;
+  white-space: pre-line;
+  
+  p {
+    margin: 0;
+    color: var(--text-color);
+  }
+}
+
+.comments-section {
+  margin-top: 24px;
+}
+
+.comments-count {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0 0 16px 0;
+  color: var(--text-color);
+}
+
+.comment-form {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+
+.comment-input {
+  flex: 1;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.comment-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.spinner {
+  margin: 0 auto;
+}
+
+.signin-prompt {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+  
+  p {
+    color: var(--secondary-text-color);
+    
+    a {
+      color: #065fd4;
+      font-weight: 500;
+      text-decoration: none;
+      
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.comments-loading {
+  margin-top: 16px;
+}
+
+.comment-skeleton {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.comment-avatar-skeleton {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.comment-content-skeleton {
+  flex: 1;
+}
+
+.comment-header-skeleton {
+  height: 16px;
+  width: 40%;
+  margin-bottom: 8px;
+  border-radius: 4px;
+}
+
+.comment-text-skeleton {
+  height: 40px;
+  width: 100%;
+  border-radius: 4px;
+}
+
+.comments-list {
+  margin-top: 16px;
+}
+
+.empty-comments {
+  text-align: center;
+  color: var(--secondary-text-color);
+  margin: 32px 0;
+}
+
+.comment {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.comment-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+
+.comment-content {
+  flex: 1;
+}
+
+.comment-header {
+  margin-bottom: 4px;
+}
+
+.comment-author {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-color);
+  margin-right: 8px;
+}
+
+.comment-time {
+  font-size: 12px;
+  color: var(--secondary-text-color);
+}
+
+.comment-text {
+  margin: 0 0 8px 0;
+  white-space: pre-line;
+  color: var(--text-color);
+}
+
+.comment-actions {
+  display: flex;
+  align-items: center;
+  
+  button {
+    font-size: 14px;
+    color: var(--secondary-text-color);
+    
+    mat-icon {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+    }
+    
+    span {
+      margin-left: 4px;
+      font-size: 12px;
+    }
+  }
+}
+
+// Shimmer Animation
+.shimmer {
+  background: linear-gradient(90deg, 
+    rgba(0, 0, 0, 0.05) 0%, 
+    rgba(0, 0, 0, 0.1) 50%, 
+    rgba(0, 0, 0, 0.05) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+// Dark theme overrides
+:host-context(.dark-theme) {
+  .shimmer {
+    background: linear-gradient(90deg, 
+      rgba(255, 255, 255, 0.05) 0%, 
+      rgba(255, 255, 255, 0.1) 50%, 
+      rgba(255, 255, 255, 0.05) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+  
+  .video-description {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+  
+  .subscribe-button.subscribed {
+    background-color: #272727;
+    color: white;
+  }
+}

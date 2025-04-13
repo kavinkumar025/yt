@@ -1,0 +1,32 @@
+<div 
+  class="video-card" 
+  [class.horizontal]="isHorizontal" 
+  (click)="watchVideo()"
+>
+  <div class="thumbnail-container">
+    <img 
+      [src]="video.thumbnailURL" 
+      [alt]="video.title" 
+      class="thumbnail"
+    >
+    <div class="duration">{{ video.duration }}</div>
+  </div>
+  
+  <div class="video-info">
+    <div class="channel-avatar" *ngIf="!isHorizontal">
+      <img 
+        [src]="video.userPhotoURL" 
+        [alt]="video.userName" 
+        class="avatar"
+      >
+    </div>
+    
+    <div class="video-details">
+      <h3 class="video-title">{{ video.title }}</h3>
+      <p class="channel-name">{{ video.userName }}</p>
+      <p class="video-stats">
+        {{ formatViews(video.stats.views) }} views • {{ timeAgo }}
+      </p>
+    </div>
+  </div>
+</div>

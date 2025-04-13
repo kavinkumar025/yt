@@ -1,0 +1,211 @@
+// @import '../../../styles/variables';
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: width 0.2s ease;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  scrollbar-width: thin;
+  
+  &.expanded {
+    width: 240px;
+  }
+  
+  &.collapsed {
+    width: 72px;
+  }
+  
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(128, 128, 128, 0.5);
+    border-radius: 4px;
+  }
+}
+
+.sidebar-section {
+  padding: 12px 0;
+}
+
+.section-title {
+  padding: 8px 24px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  margin: 0 12px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  
+  &:hover {
+    background-color: var(--hover-color);
+  }
+  
+  &.active {
+    background-color: var(--active-item-bg);
+    
+    .mat-icon {
+      color: var(--primary-color);
+    }
+    
+    .item-text {
+      font-weight: 500;
+      color: var(--primary-color);
+    }
+  }
+  
+  .mat-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+    margin-right: 24px;
+    color: var(--icon-color);
+  }
+  
+  .item-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 14px;
+  }
+  
+  .sidebar.collapsed & {
+    justify-content: center;
+    margin: 0 auto;
+    
+    .mat-icon {
+      margin-right: 0;
+    }
+  }
+}
+
+.channel-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 24px;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.sidebar-divider {
+  height: 1px;
+  background-color: var(--divider-color);
+  margin: 4px 12px;
+}
+
+.sign-in-message {
+  padding: 12px 24px;
+  
+  p {
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+}
+
+.sign-in-button {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  color: #3ea6ff;
+  font-weight: 500;
+  
+  &:hover {
+    background-color: rgba(62, 166, 255, 0.1);
+  }
+  
+  .mat-icon {
+    margin-right: 8px;
+  }
+}
+
+.empty-state {
+  padding: 16px 24px;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.sidebar-footer {
+  padding: 16px 24px;
+  margin-top: auto;
+  font-size: 13px;
+  color: var(--text-secondary);
+  
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+    
+    a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      margin-right: 8px;
+      margin-bottom: 8px;
+      
+      &:hover {
+        color: var(--text-color);
+      }
+    }
+  }
+  
+  .copyright {
+    font-size: 12px;
+  }
+}
+
+// YouTube red theme
+:root {
+  --primary-color: #ff0000;
+  --primary-hover: #cc0000;
+  
+  .light-theme {
+    --bg-color: #ffffff;
+    --text-color: #0f0f0f;
+    --text-secondary: #606060;
+    --icon-color: #606060;
+    --hover-color: rgba(0, 0, 0, 0.05);
+    --active-item-bg: rgba(0, 0, 0, 0.1);
+    --divider-color: rgba(0, 0, 0, 0.1);
+    --border-color: #ccc;
+  }
+  
+  .dark-theme {
+    --bg-color: #0f0f0f;
+    --text-color: #ffffff;
+    --text-secondary: #aaaaaa;
+    --icon-color: #aaaaaa;
+    --hover-color: rgba(255, 255, 255, 0.1);
+    --active-item-bg: rgba(255, 255, 255, 0.2);
+    --divider-color: rgba(255, 255, 255, 0.1);
+    --border-color: #444;
+  }
+}

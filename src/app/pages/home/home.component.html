@@ -1,0 +1,103 @@
+<div class="home-container">
+  <!-- Loading state -->
+  <div class="loading-container" *ngIf="loading">
+    <mat-spinner [diameter]="50"></mat-spinner>
+  </div>
+  
+  <!-- Content when loaded -->
+  <ng-container *ngIf="!loading">
+    <!-- Trending section -->
+    <section class="trending-section">
+      <h2 class="section-title">Trending</h2>
+      
+      <div class="video-grid trending-grid">
+        <!-- Show skeleton if data is loading or empty -->
+        <ng-container *ngIf="(trendingVideos$ | async)?.length; else trendingSkeleton">
+          <div class="video-card" *ngFor="let video of trendingVideos$ | async">
+            <a [routerLink]="['/watch', video.id]" class="thumbnail-container">
+              <img [src]="video.thumbnailURL" [alt]="video.title" class="thumbnail">
+              <span class="duration">{{ video.duration }}</span>
+            </a>
+            
+            <div class="video-info">
+              <a [routerLink]="['/channel', video.userId]" class="channel-avatar">
+                <img [src]="video.userPhotoURL || 'assets/default-avatar.png'" [alt]="video.userName">
+              </a>
+              
+              <div class="video-details">
+                <a [routerLink]="['/watch', video.id]" class="video-title">{{ video.title }}</a>
+                <a [routerLink]="['/channel', video.userId]" class="channel-name">{{ video.userName }}</a>
+                <div class="video-meta">
+                  <span>{{ video.stats.views | number }} views</span>
+                  <span class="dot-separator">•</span>
+                  <span>{{ video.createdAt | date }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        
+        <ng-template #trendingSkeleton>
+          <div class="video-card skeleton" *ngFor="let i of [1,2,3,4,5,6]">
+            <div class="thumbnail-container skeleton-thumbnail"></div>
+            <div class="video-info">
+              <div class="channel-avatar skeleton-avatar"></div>
+              <div class="video-details">
+                <div class="skeleton-title"></div>
+                <div class="skeleton-channel"></div>
+                <div class="skeleton-meta"></div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </section>
+    
+    <!-- Recommended section -->
+    <section class="recommended-section">
+      <h2 class="section-title">Recommended</h2>
+      
+      <div class="video-grid recommended-grid">
+        <!-- Show skeleton if data is loading or empty -->
+        <ng-container *ngIf="(recommendedVideos$ | async)?.length; else recommendedSkeleton">
+          <div class="video-card" *ngFor="let video of recommendedVideos$ | async">
+            <a [routerLink]="['/watch', video.id]" class="thumbnail-container">
+              <img [src]="video.thumbnailURL" [alt]="video.title" class="thumbnail">
+              <span class="duration">{{ video.duration }}</span>
+            </a>
+            
+            <div class="video-info">
+              <a [routerLink]="['/channel', video.userId]" class="channel-avatar">
+                <img [src]="video.userPhotoURL || 'assets/default-avatar.png'" [alt]="video.userName">
+              </a>
+              
+              <div class="video-details">
+                <a [routerLink]="['/watch', video.id]" class="video-title">{{ video.title }}</a>
+                <a [routerLink]="['/channel', video.userId]" class="channel-name">{{ video.userName }}</a>
+                <div class="video-meta">
+                  <span>{{ video.stats.views | number }} views</span>
+                  <span class="dot-separator">•</span>
+                  <span>{{ video.createdAt | date }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        
+        <ng-template #recommendedSkeleton>
+          <div class="video-card skeleton" *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12]">
+            <div class="thumbnail-container skeleton-thumbnail"></div>
+            <div class="video-info">
+              <div class="channel-avatar skeleton-avatar"></div>
+              <div class="video-details">
+                <div class="skeleton-title"></div>
+                <div class="skeleton-channel"></div>
+                <div class="skeleton-meta"></div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </section>
+  </ng-container>
+</div>

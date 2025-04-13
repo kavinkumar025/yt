@@ -1,0 +1,32 @@
+<nav class="mobile-nav">
+  <a 
+    class="nav-item" 
+    [class.active]="isRouteActive('/')"
+    (click)="navigateTo('/')"
+  >
+    <mat-icon>home</mat-icon>
+    <span>Home</span>
+  </a>
+  <a class="nav-item">
+    <mat-icon>explore</mat-icon>
+    <span>Explore</span>
+  </a>
+  <a 
+    class="nav-item create-button" 
+    (click)="onCreateClick()"
+  >
+    <mat-icon>add_circle</mat-icon>
+  </a>
+  <a class="nav-item">
+    <mat-icon>subscriptions</mat-icon>
+    <span>Subs</span>
+  </a>
+  <a 
+    class="nav-item" 
+    [class.active]="isRouteActive('/profile')"
+    (click)="navigateTo('/profile')"
+  >
+    <mat-icon>video_library</mat-icon>
+    <span>Library</span>
+  </a>
+</nav>

@@ -1,0 +1,32 @@
+<aside class="mini-sidebar">
+  <div class="mini-sidebar-content">
+    <a 
+      class="mini-sidebar-item" 
+      [class.active]="isRouteActive('/')" 
+      (click)="navigateTo('/')"
+    >
+      <mat-icon>home</mat-icon>
+      <span>Home</span>
+    </a>
+    <a class="mini-sidebar-item">
+      <mat-icon>explore</mat-icon>
+      <span>Explore</span>
+    </a>
+    <a class="mini-sidebar-item">
+      <mat-icon>local_fire_department</mat-icon>
+      <span>Trending</span>
+    </a>
+    <a class="mini-sidebar-item">
+      <mat-icon>subscriptions</mat-icon>
+      <span>Subs</span>
+    </a>
+    <a 
+      class="mini-sidebar-item" 
+      [class.active]="isRouteActive('/profile')" 
+      (click)="navigateTo('/profile')"
+    >
+      <mat-icon>video_library</mat-icon>
+      <span>Library</span>
+    </a>
+  </div>
+</aside>

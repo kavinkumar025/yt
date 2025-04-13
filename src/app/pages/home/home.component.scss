@@ -1,0 +1,211 @@
+.home-container {
+  padding: 24px;
+  padding-top: 76px; // Account for fixed header
+  max-width: 2200px;
+  margin: 0 auto;
+  
+  // Dark theme adjustments
+  :host-context(.dark-theme) & {
+    color: white;
+  }
+}
+
+// Section titles
+.section-title {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 16px;
+  
+  :host-context(.dark-theme) & {
+    color: white;
+  }
+}
+
+// Video grid layouts
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+  
+  // Trending grid has larger thumbnails
+  &.trending-grid {
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    
+    @media (max-width: 768px) {
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+  }
+}
+
+// Video card styling
+.video-card {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  
+  // Thumbnail container with duration label
+  .thumbnail-container {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; // 16:9 aspect ratio
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 12px;
+    background-color: #e5e5e5;
+    display: block;
+    text-decoration: none;
+    
+    :host-context(.dark-theme) & {
+      background-color: #181818;
+    }
+    
+    .thumbnail {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .duration {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      background-color: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 2px 4px;
+      border-radius: 2px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+  }
+  
+  // Video info area with avatar and text
+  .video-info {
+    display: flex;
+    
+    .channel-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-right: 12px;
+      flex-shrink: 0;
+      text-decoration: none;
+      
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+    
+    .video-details {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-width: 0; // Allow text to truncate
+      
+      .video-title {
+        font-size: 16px;
+        font-weight: 500;
+        margin-bottom: 6px;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2; // Limit to 2 lines
+        overflow: hidden;
+        text-decoration: none;
+        color: inherit;
+      }
+      
+      .channel-name {
+        font-size: 14px;
+        color: #606060;
+        margin-bottom: 4px;
+        text-decoration: none;
+        
+        :host-context(.dark-theme) & {
+          color: #aaa;
+        }
+      }
+      
+      .video-meta {
+        font-size: 14px;
+        color: #606060;
+        
+        :host-context(.dark-theme) & {
+          color: #aaa;
+        }
+      }
+    }
+  }
+  
+  // Skeleton loading styles
+  &.skeleton {
+    .skeleton-thumbnail {
+      background-color: #e5e5e5;
+      
+      :host-context(.dark-theme) & {
+        background-color: #303030;
+      }
+    }
+    
+    .skeleton-avatar {
+      background-color: #e5e5e5;
+      
+      :host-context(.dark-theme) & {
+        background-color: #303030;
+      }
+    }
+    
+    .skeleton-title {
+      height: 16px;
+      margin-bottom: 8px;
+      background-color: #e5e5e5;
+      border-radius: 4px;
+      width: 90%;
+      
+      :host-context(.dark-theme) & {
+        background-color: #303030;
+      }
+    }
+    
+    .skeleton-channel {
+      height: 14px;
+      margin-bottom: 6px;
+      background-color: #e5e5e5;
+      border-radius: 4px;
+      width: 60%;
+      
+      :host-context(.dark-theme) & {
+        background-color: #303030;
+      }
+    }
+    
+    .skeleton-meta {
+      height: 14px;
+      background-color: #e5e5e5;
+      border-radius: 4px;
+      width: 40%;
+      
+      :host-context(.dark-theme) & {
+        background-color: #303030;
+      }
+    }
+  }
+}
+
+// Loading container
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+// Separator dot for meta info
+.dot-separator {
+  margin: 0 4px;
+}

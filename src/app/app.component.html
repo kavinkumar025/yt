@@ -1,0 +1,36 @@
+<div class="app-container" [class.dark-theme]="themeService.isDarkTheme">
+  <!-- Header -->
+  <app-header 
+    (menuToggle)="toggleSidebar()" 
+    (openLogin)="openLoginModal()" 
+    (openUpload)="openUploadModal()">
+  </app-header>
+  
+  <div class="main-wrapper">
+    <!-- Desktop sidebar - always visible but can collapse -->
+    <app-sidebar 
+      *ngIf="!isMobileView" 
+      [expanded]="isSidebarExpanded" 
+      (openLogin)="openLoginModal()">
+    </app-sidebar>
+    
+    <!-- Mobile sidebar - slides in when toggled -->
+    <div class="mobile-sidebar-overlay" *ngIf="isMobileView && isMobileSidebarOpen" (click)="closeMobileSidebar()"></div>
+    <div class="mobile-sidebar-container" *ngIf="isMobileView" [class.open]="isMobileSidebarOpen">
+      <app-sidebar 
+        [expanded]="true" 
+        (openLogin)="openLoginModal()">
+      </app-sidebar>
+    </div>
+    
+    <!-- Content area -->
+    <div class="content-area" [class.expanded]="!isSidebarExpanded && !isMobileView">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  
+  <!-- Theme toggle button -->
+  <button mat-mini-fab class="theme-toggle" (click)="themeService.toggleTheme()">
+    <mat-icon>{{ themeService.isDarkTheme ? 'light_mode' : 'dark_mode' }}</mat-icon>
+  </button>
+</div>

@@ -1,0 +1,136 @@
+<div class="upload-modal-container">
+  <h2 mat-dialog-title>Upload content</h2>
+  
+  <button mat-icon-button mat-dialog-close class="close-button">
+    <mat-icon>close</mat-icon>
+  </button>
+
+  <div 
+    class="drop-area" 
+    [class.dropping]="isDropping" 
+    (dragover)="onDragOver($event)" 
+    (dragleave)="onDragLeave($event)" 
+    (drop)="onDrop($event)"
+    *ngIf="!selectedFile"
+  >
+    <div class="upload-icon-container">
+      <mat-icon class="upload-icon">cloud_upload</mat-icon>
+    </div>
+    <h3 class="upload-title">Drag and drop files to upload</h3>
+    <p class="upload-subtitle">Your content will be private until you publish it</p>
+    
+    <button mat-raised-button color="primary" (click)="fileInput.click()">
+      SELECT FILES
+    </button>
+    <input 
+      type="file" 
+      #fileInput 
+      (change)="onFileSelected($event)" 
+      accept="video/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation"
+      hidden
+    >
+    
+    <p class="upload-terms">
+      By submitting your content to SplotShot, you acknowledge that you agree to SplotShot's Terms of Service and Community Guidelines.
+    </p>
+  </div>
+
+  <div class="upload-form" *ngIf="selectedFile">
+    <div class="file-details">
+      <div class="file-preview">
+        <div *ngIf="fileType === 'video'" class="video-thumbnail">
+          <img *ngIf="thumbnailUrl" [src]="thumbnailUrl" alt="Video thumbnail">
+          <div *ngIf="!thumbnailUrl" class="no-thumbnail">
+            <mat-icon>videocam</mat-icon>
+          </div>
+        </div>
+        <div *ngIf="fileType === 'document'" class="document-preview">
+          <mat-icon>description</mat-icon>
+          <span>{{ selectedFile.name }}</span>
+        </div>
+      </div>
+      
+      <div class="file-info">
+        <p class="file-name">{{ selectedFile.name }}</p>
+        <p class="file-size">{{ (selectedFile.size / 1024 / 1024).toFixed(2) }} MB</p>
+        
+        <div *ngIf="fileType === 'video'" class="thumbnail-upload">
+          <p>Custom Thumbnail</p>
+          <button mat-stroked-button (click)="thumbnailInput.click()">
+            <mat-icon>add_photo_alternate</mat-icon> 
+            Upload thumbnail
+          </button>
+          <input 
+            type="file" 
+            #thumbnailInput 
+            (change)="onThumbnailSelected($event)" 
+            accept="image/*"
+            hidden
+          >
+        </div>
+      </div>
+    </div>
+    
+    <form [formGroup]="uploadForm" (ngSubmit)="uploadFile()">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Title</mat-label>
+        <input matInput formControlName="title" placeholder="Add a title that describes your content">
+        <mat-error *ngIf="uploadForm.get('title')?.hasError('required')">
+          Title is required
+        </mat-error>
+        <mat-error *ngIf="uploadForm.get('title')?.hasError('maxlength')">
+          Title cannot exceed 100 characters
+        </mat-error>
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Description</mat-label>
+        <textarea 
+          matInput 
+          formControlName="description" 
+          placeholder="Tell viewers about your content"
+          rows="4"
+        ></textarea>
+        <mat-error *ngIf="uploadForm.get('description')?.hasError('maxlength')">
+          Description cannot exceed 5000 characters
+        </mat-error>
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Category</mat-label>
+        <mat-select formControlName="category">
+          <mat-option *ngFor="let category of categories" [value]="category.id">
+            {{ category.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="uploadForm.get('category')?.hasError('required')">
+          Category is required
+        </mat-error>
+      </mat-form-field>
+      
+      <div class="upload-progress" *ngIf="isUploading">
+        <mat-progress-bar mode="determinate" [value]="uploadProgress"></mat-progress-bar>
+        <p>Uploading... {{ uploadProgress }}%</p>
+      </div>
+      
+      <div class="form-actions">
+        <button 
+          mat-button 
+          type="button" 
+          [disabled]="isUploading"
+          (click)="cancelUpload()"
+        >
+          CANCEL
+        </button>
+        <button 
+          mat-raised-button 
+          color="primary" 
+          type="submit"
+          [disabled]="uploadForm.invalid || isUploading"
+        >
+          UPLOAD
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

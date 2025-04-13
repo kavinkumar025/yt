@@ -1,0 +1,173 @@
+<div class="sidebar" [class.expanded]="expanded" [class.collapsed]="!expanded">
+  <!-- Main navigation -->
+  <div class="sidebar-section">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="sidebar-item">
+      <mat-icon>home</mat-icon>
+      <span *ngIf="expanded" class="item-text">Home</span>
+    </a>
+    
+    <a routerLink="/shorts" routerLinkActive="active" class="sidebar-item">
+      <mat-icon>video_camera_front</mat-icon>
+      <span *ngIf="expanded" class="item-text">Shorts</span>
+    </a>
+    
+    <a routerLink="/subscriptions" routerLinkActive="active" class="sidebar-item">
+      <mat-icon>subscriptions</mat-icon>
+      <span *ngIf="expanded" class="item-text">Subscriptions</span>
+    </a>
+    
+    <ng-container *ngIf="(user$ | async)?.role === 'director' || (user$ | async)?.role === 'creator'">
+      <a routerLink="/studio" routerLinkActive="active" class="sidebar-item">
+        <mat-icon>video_library</mat-icon>
+        <span *ngIf="expanded" class="item-text">Studio</span>
+      </a>
+    </ng-container>
+  </div>
+  
+  <div *ngIf="expanded" class="sidebar-divider"></div>
+  
+  <!-- Signed in section -->
+  <div class="sidebar-section" *ngIf="user$ | async; else notSignedIn">
+    <div *ngIf="expanded" class="section-title">You</div>
+    
+    <a [routerLink]="['/channel', (user$ | async)?.uid]" routerLinkActive="active" class="sidebar-item">
+      <mat-icon>account_box</mat-icon>
+      <span *ngIf="expanded" class="item-text">Your channel</span>
+    </a>
+    
+    <a routerLink="/history" routerLinkActive="active" class="sidebar-item">
+      <mat-icon>history</mat-icon>
+      <span *ngIf="expanded" class="item-text">History</span>
+    </a>
+    
+    <a routerLink="/liked" routerLinkActive="active" class="sidebar-item">
+      <mat-icon>thumb_up</mat-icon>
+      <span *ngIf="expanded" class="item-text">Liked videos</span>
+    </a>
+    
+    <ng-container *ngIf="(user$ | async)?.role === 'director'">
+      <a routerLink="/messages" routerLinkActive="active" class="sidebar-item">
+        <mat-icon>message</mat-icon>
+        <span *ngIf="expanded" class="item-text">Messages</span>
+      </a>
+    </ng-container>
+    
+    <ng-container *ngIf="(user$ | async)?.role === 'creator'">
+      <a routerLink="/celebrity-fans" routerLinkActive="active" class="sidebar-item">
+        <mat-icon>star</mat-icon>
+        <span *ngIf="expanded" class="item-text">Celebrity Fans</span>
+      </a>
+      <a routerLink="/director-messages" routerLinkActive="active" class="sidebar-item">
+        <mat-icon>mail</mat-icon>
+        <span *ngIf="expanded" class="item-text">Director Messages</span>
+      </a>
+    </ng-container>
+  </div>
+  
+  <!-- Not signed in placeholder -->
+  <ng-template #notSignedIn>
+    <div class="sidebar-section">
+      <div *ngIf="expanded" class="sign-in-message">
+        <p>Sign in to like videos, comment, and subscribe.</p>
+        <button class="sign-in-button" (click)="onSignIn()">
+          <mat-icon>account_circle</mat-icon>
+          <span>Sign in</span>
+        </button>
+      </div>
+      <div *ngIf="!expanded" class="sidebar-item" (click)="onSignIn()">
+        <mat-icon>account_circle</mat-icon>
+      </div>
+    </div>
+  </ng-template>
+  
+  <div *ngIf="expanded" class="sidebar-divider"></div>
+  
+  <!-- Subscriptions section (only show when expanded and signed in) -->
+  <div class="sidebar-section" *ngIf="expanded && (user$ | async)">
+    <div class="section-title">Subscriptions</div>
+    
+    <ng-container *ngIf="subscribedChannels$ | async as channels">
+      <ng-container *ngIf="channels.length; else noSubscriptions">
+        <a *ngFor="let channel of channels" 
+           [routerLink]="['/channel', channel.uid]" 
+           routerLinkActive="active" 
+           class="sidebar-item">
+          <div class="channel-avatar">
+            <img [src]="channel.photoURL || 'assets/default-avatar.png'" [alt]="channel.displayName">
+          </div>
+          <span class="item-text">{{ channel.displayName }}</span>
+        </a>
+      </ng-container>
+      
+      <ng-template #noSubscriptions>
+        <div class="empty-state">
+          <p>Subscriptions will appear here</p>
+        </div>
+      </ng-template>
+    </ng-container>
+  </div>
+  
+  <div *ngIf="expanded" class="sidebar-divider"></div>
+  
+  <!-- Explore section -->
+  <div class="sidebar-section">
+    <div *ngIf="expanded" class="section-title">Explore</div>
+    
+    <a routerLink="/trending" routerLinkActive="active" class="sidebar-item">
+      <mat-icon>trending_up</mat-icon>
+      <span *ngIf="expanded" class="item-text">Trending</span>
+    </a>
+    
+    <a routerLink="/music" routerLinkActive="active" class="sidebar-item">
+      <mat-icon>music_note</mat-icon>
+      <span *ngIf="expanded" class="item-text">Music</span>
+    </a>
+    
+    <a routerLink="/movies" routerLinkActive="active" class="sidebar-item">
+      <mat-icon>movie</mat-icon>
+      <span *ngIf="expanded" class="item-text">Movies</span>
+    </a>
+    
+    <a routerLink="/gaming" routerLinkActive="active" class="sidebar-item">
+      <mat-icon>sports_esports</mat-icon>
+      <span *ngIf="expanded" class="item-text">Gaming</span>
+    </a>
+    
+    <a routerLink="/news" routerLinkActive="active" class="sidebar-item">
+      <mat-icon>feed</mat-icon>
+      <span *ngIf="expanded" class="item-text">News</span>
+    </a>
+    
+    <a routerLink="/sports" routerLinkActive="active" class="sidebar-item">
+      <mat-icon>sports_soccer</mat-icon>
+      <span *ngIf="expanded" class="item-text">Sports</span>
+    </a>
+  </div>
+  
+  <div *ngIf="expanded" class="sidebar-divider"></div>
+  
+  <!-- Footer links -->
+  <div class="sidebar-footer" *ngIf="expanded">
+    <div class="footer-links">
+      <a href="#">About</a>
+      <a href="#">Press</a>
+      <a href="#">Copyright</a>
+      <a href="#">Contact</a>
+      <a href="#">Creators</a>
+      <a href="#">Advertise</a>
+      <a href="#">Developers</a>
+    </div>
+    
+    <div class="footer-links">
+      <a href="#">Terms</a>
+      <a href="#">Privacy</a>
+      <a href="#">Policy & Safety</a>
+      <a href="#">How YouTube works</a>
+      <a href="#">Test new features</a>
+    </div>
+    
+    <div class="copyright">
+      © 2025 YouTube Clone
+    </div>
+  </div>
+</div>

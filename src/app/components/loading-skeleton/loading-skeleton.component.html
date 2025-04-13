@@ -1,0 +1,17 @@
+<div class="skeleton-container" [class.horizontal-layout]="layout === 'horizontal'">
+  <div 
+    class="skeleton-item" 
+    *ngFor="let item of items"
+    [class.horizontal-item]="layout === 'horizontal'"
+  >
+    <div class="thumbnail-skeleton shimmer"></div>
+    <div class="content-skeleton">
+      <div class="avatar-skeleton shimmer" *ngIf="layout !== 'horizontal'"></div>
+      <div class="text-skeletons">
+        <div class="title-skeleton shimmer"></div>
+        <div class="subtitle-skeleton shimmer"></div>
+        <div class="info-skeleton shimmer"></div>
+      </div>
+    </div>
+  </div>
+</div>

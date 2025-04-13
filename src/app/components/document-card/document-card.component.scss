@@ -1,0 +1,113 @@
+.document-card {
+  cursor: pointer;
+  margin-bottom: 16px;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    
+    .download-button {
+      opacity: 1;
+    }
+  }
+}
+
+.thumbnail-container {
+  position: relative;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  aspect-ratio: 16/9;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.file-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.file-icon {
+  font-size: 64px;
+  height: 64px;
+  width: 64px;
+}
+
+.download-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.document-info {
+  display: flex;
+  padding: 12px 0 0 0;
+}
+
+.channel-avatar {
+  margin-right: 12px;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.document-details {
+  flex: 1;
+  min-width: 0; // For text truncation
+}
+
+.document-title {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0 0 4px 0;
+  line-height: 1.2;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text-color);
+}
+
+.channel-name, .document-stats {
+  font-size: 14px;
+  color: var(--secondary-text-color);
+  margin: 0 0 4px 0;
+}
+
+// Document type specific colors
+.document-card {
+  &.pdf .file-icon {
+    color: #F40F02;
+  }
+  
+  &.word .file-icon {
+    color: #2b579a;
+  }
+  
+  &.excel .file-icon {
+    color: #217346;
+  }
+  
+  &.powerpoint .file-icon {
+    color: #d24726;
+  }
+}
+
+// Dark theme overrides
+:host-context(.dark-theme) {
+  .thumbnail-container {
+    background-color: #303030;
+  }
+}
