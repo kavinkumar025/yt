@@ -1,22 +1,21 @@
-// @import '../../../styles/variables';
-
 .sidebar {
   display: flex;
   flex-direction: column;
   height: 100%;
-  transition: width 0.2s ease;
+  transition: width 0.3s ease, background-color 0.3s ease;
   overflow-y: auto;
   overflow-x: hidden;
   background-color: var(--bg-color);
   color: var(--text-color);
   scrollbar-width: thin;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   
   &.expanded {
-    width: 240px;
+    width: 250px;
   }
   
   &.collapsed {
-    width: 72px;
+    width: 80px;
   }
   
   &::-webkit-scrollbar {
@@ -28,35 +27,39 @@
   }
   
   &::-webkit-scrollbar-thumb {
-    background-color: rgba(128, 128, 128, 0.5);
+    background-color: rgba(128, 128, 128, 0.3);
     border-radius: 4px;
   }
 }
 
 .sidebar-section {
-  padding: 12px 0;
+  padding: 16px 0;
+  position: relative;
 }
 
 .section-title {
   padding: 8px 24px;
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .sidebar-item {
   display: flex;
   align-items: center;
-  padding: 8px 12px;
-  margin: 0 12px;
-  border-radius: 10px;
+  padding: 10px 20px;
+  margin: 0 16px;
+  border-radius: 12px;
   text-decoration: none;
   color: var(--text-color);
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
   
   &:hover {
     background-color: var(--hover-color);
+    transform: translateX(5px);
   }
   
   &.active {
@@ -67,24 +70,26 @@
     }
     
     .item-text {
-      font-weight: 500;
+      font-weight: 600;
       color: var(--primary-color);
     }
   }
   
   .mat-icon {
-    font-size: 24px;
-    width: 24px;
-    height: 24px;
-    margin-right: 24px;
+    font-size: 26px;
+    width: 26px;
+    height: 26px;
+    margin-right: 20px;
     color: var(--icon-color);
+    transition: color 0.3s ease;
   }
   
   .item-text {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-size: 14px;
+    font-size: 15px;
+    transition: color 0.3s ease;
   }
   
   .sidebar.collapsed & {
@@ -98,11 +103,11 @@
 }
 
 .channel-avatar {
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   overflow: hidden;
-  margin-right: 24px;
+  margin-right: 16px;
   
   img {
     width: 100%;
@@ -114,7 +119,7 @@
 .sidebar-divider {
   height: 1px;
   background-color: var(--divider-color);
-  margin: 4px 12px;
+  margin: 12px 16px;
 }
 
 .sign-in-message {
@@ -130,21 +135,22 @@
 .sign-in-button {
   display: flex;
   align-items: center;
-  padding: 8px 16px;
+  padding: 10px 18px;
   border: 1px solid var(--border-color);
-  border-radius: 24px;
+  border-radius: 30px;
   background: transparent;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color 0.3s ease, transform 0.2s ease;
   color: #3ea6ff;
-  font-weight: 500;
+  font-weight: 600;
   
   &:hover {
     background-color: rgba(62, 166, 255, 0.1);
+    transform: scale(1.05);
   }
   
   .mat-icon {
-    margin-right: 8px;
+    margin-right: 10px;
   }
 }
 
@@ -152,13 +158,15 @@
   padding: 16px 24px;
   color: var(--text-secondary);
   font-size: 14px;
+  text-align: center;
 }
 
 .sidebar-footer {
-  padding: 16px 24px;
+  padding: 24px;
   margin-top: auto;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text-secondary);
+  border-top: 1px solid var(--divider-color);
   
   .footer-links {
     display: flex;
@@ -168,8 +176,10 @@
     a {
       color: var(--text-secondary);
       text-decoration: none;
-      margin-right: 8px;
+      margin-right: 12px;
       margin-bottom: 8px;
+      font-size: 14px;
+      transition: color 0.3s ease;
       
       &:hover {
         color: var(--text-color);
@@ -179,19 +189,21 @@
   
   .copyright {
     font-size: 12px;
+    text-align: center;
+    color: var(--text-secondary);
   }
 }
 
-// YouTube red theme
+// SplotShot red theme
 :root {
   --primary-color: #ff0000;
   --primary-hover: #cc0000;
   
   .light-theme {
     --bg-color: #ffffff;
-    --text-color: #0f0f0f;
-    --text-secondary: #606060;
-    --icon-color: #606060;
+    --text-color: #1e1e1e;
+    --text-secondary: #777777;
+    --icon-color: #777777;
     --hover-color: rgba(0, 0, 0, 0.05);
     --active-item-bg: rgba(0, 0, 0, 0.1);
     --divider-color: rgba(0, 0, 0, 0.1);
@@ -199,8 +211,8 @@
   }
   
   .dark-theme {
-    --bg-color: #0f0f0f;
-    --text-color: #ffffff;
+    --bg-color: #111111;
+    --text-color: #e0e0e0;
     --text-secondary: #aaaaaa;
     --icon-color: #aaaaaa;
     --hover-color: rgba(255, 255, 255, 0.1);
