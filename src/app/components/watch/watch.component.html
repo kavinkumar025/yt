@@ -1,0 +1,8 @@
+<div class="video-player-wrapper" *ngIf="videoData">
+    <h2>{{ videoData.title }}</h2>
+    <video width="100%" controls autoplay>
+      <source [src]="videoData.videoURL" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+    <p>{{ videoData.description }}</p>
+  </div>

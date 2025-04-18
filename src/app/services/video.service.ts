@@ -28,7 +28,9 @@ import {
 } from '@angular/fire/storage';
 import { Video, VideoStats, VideoUpload } from '../models/video.model';
 import { AuthService } from './auth.service';
-import {  limit as firestoreLimit } from 'firebase/firestore';
+import { limit as firestoreLimit } from 'firebase/firestore';
+import { setDoc } from '@angular/fire/firestore';
+
 
 @Injectable({
   providedIn: 'root'
@@ -68,7 +70,6 @@ export class VideoService {
         },
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
-            // Video successfully uploaded, create database entry
             const videoRef = doc(this.firestore, `videos/${videoId}`);
             const videoStats: VideoStats = {
               views: 0,
@@ -92,7 +93,7 @@ export class VideoService {
               stats: videoStats
             };
 
-            updateVideoDoc(videoRef, videoDoc)
+            setDoc(videoRef, videoDoc)
               .then(() => {
                 observer.next(videoId);
                 observer.complete();
@@ -102,6 +103,7 @@ export class VideoService {
                 observer.error(error);
               });
           });
+
         }
       );
     });
@@ -787,6 +789,8 @@ export class VideoService {
     }
     return copy;
   }
+
+
 }
 
 function updateVideoDoc(docRef: any, data: any, options?: any): Promise<void> {
