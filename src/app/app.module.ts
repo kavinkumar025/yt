@@ -36,6 +36,10 @@ import { HeaderComponent } from './components/header/header.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { HomeComponent } from './components/home/home.component';
 import { UploadModalComponent } from './components/upload-modal/upload-modal.component';
+import { CommonModule } from '@angular/common';
+import { LoginComponent } from './components/login/login.component';
+import { WatchComponent } from './components/watch/watch.component';
+import { VideoPlayerComponent } from './pages/video-player/video-player.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +47,10 @@ import { UploadModalComponent } from './components/upload-modal/upload-modal.com
     HeaderComponent,
     SidebarComponent,
     HomeComponent,
-    UploadModalComponent
+    UploadModalComponent,
+    LoginComponent,
+    WatchComponent,
+    VideoPlayerComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +59,7 @@ import { UploadModalComponent } from './components/upload-modal/upload-modal.com
     ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
-    
+    CommonModule,
     // Material modules
     MatButtonModule,
     MatIconModule,

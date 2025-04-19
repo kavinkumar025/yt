@@ -15,21 +15,21 @@ import { formatDistanceToNow } from 'date-fns';
 })
 export class VideoPlayerComponent implements OnInit, OnDestroy {
   @ViewChild('videoPlayer') videoPlayerRef: ElementRef<HTMLVideoElement>;
-  
+
   video: Video;
   recommendedVideos: Video[] = [];
   comments: any[] = [];
-  
+
   isLoading = true;
   isLoadingRecommended = true;
   isLoadingComments = true;
-  
+
   userLikeStatus: 'like' | 'dislike' | null = null;
   isSubscribed = false;
-  
+
   commentControl = new FormControl('', [Validators.required, Validators.maxLength(1000)]);
   isSubmittingComment = false;
-  
+
   private routeSub: Subscription;
   private authSub: Subscription;
 
@@ -47,7 +47,7 @@ export class VideoPlayerComponent implements OnInit, OnDestroy {
         this.loadVideo(videoId);
       }
     });
-    
+
     this.authSub = this.authService.currentUser$.subscribe(user => {
       if (user && this.video) {
         this.checkIfSubscribed(user.uid, this.video.userId);
@@ -71,11 +71,11 @@ export class VideoPlayerComponent implements OnInit, OnDestroy {
       next: (video) => {
         this.video = video;
         this.isLoading = false;
-        
+
         this.loadRecommendedVideos(videoId);
         this.loadComments(videoId);
         this.getUserLikeStatus();
-        
+
         const currentUser = this.authService.getCurrentUser();
         if (currentUser) {
           this.checkIfSubscribed(currentUser.uid, video.userId);
@@ -121,7 +121,7 @@ export class VideoPlayerComponent implements OnInit, OnDestroy {
     if (!this.video || !this.authService.getCurrentUser()) {
       return;
     }
-    
+
     this.videoService.getUserLikeStatus(this.video.id).subscribe({
       next: (status) => {
         this.userLikeStatus = status;
@@ -145,12 +145,12 @@ export class VideoPlayerComponent implements OnInit, OnDestroy {
 
   likeVideo(): void {
     if (!this.video) return;
-    
+
     if (!this.authService.getCurrentUser()) {
       this.toastr.info('Please sign in to like videos', 'Sign in required');
       return;
     }
-    
+
     this.videoService.likeVideo(this.video.id).subscribe({
       next: () => {
         if (this.userLikeStatus === 'like') {
@@ -173,12 +173,10 @@ export class VideoPlayerComponent implements OnInit, OnDestroy {
 
   dislikeVideo(): void {
     if (!this.video) return;
-    
     if (!this.authService.getCurrentUser()) {
       this.toastr.info('Please sign in to dislike videos', 'Sign in required');
       return;
     }
-    
     this.videoService.dislikeVideo(this.video.id).subscribe({
       next: () => {
         if (this.userLikeStatus === 'dislike') {
@@ -201,12 +199,10 @@ export class VideoPlayerComponent implements OnInit, OnDestroy {
 
   subscribeToChannel(): void {
     if (!this.video) return;
-    
     if (!this.authService.getCurrentUser()) {
       this.toastr.info('Please sign in to subscribe to channels', 'Sign in required');
       return;
     }
-    
     if (this.isSubscribed) {
       this.authService.unsubscribeFromChannel(this.video.userId).subscribe({
         next: () => {
@@ -234,30 +230,23 @@ export class VideoPlayerComponent implements OnInit, OnDestroy {
 
   submitComment(): void {
     if (!this.video) return;
-    
     if (!this.authService.getCurrentUser()) {
       this.toastr.info('Please sign in to comment', 'Sign in required');
       return;
     }
-    
     if (this.commentControl.invalid) {
       return;
     }
-    
     this.isSubmittingComment = true;
     const commentText = this.commentControl.value;
-    
     this.videoService.addComment(this.video.id, commentText).subscribe({
       next: (commentId) => {
         this.isSubmittingComment = false;
         this.commentControl.reset();
-        
         // Reload comments to show the new one
         this.loadComments(this.video.id);
-        
         // Update comment count
         this.video.stats.comments++;
-        
         this.toastr.success('Comment added successfully');
       },
       error: (error) => {
@@ -289,8 +278,8 @@ export class VideoPlayerComponent implements OnInit, OnDestroy {
         text: this.video.description,
         url: window.location.href
       })
-      .then(() => this.toastr.success('Shared successfully'))
-      .catch((error) => console.error('Error sharing:', error));
+        .then(() => this.toastr.success('Shared successfully'))
+        .catch((error) => console.error('Error sharing:', error));
     } else {
       // Fallback for browsers that don't support the Web Share API
       navigator.clipboard.writeText(window.location.href)

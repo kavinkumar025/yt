@@ -7,11 +7,12 @@ import { Category } from '../../models/category.model';
   styleUrls: ['./category-filters.component.scss']
 })
 export class CategoryFiltersComponent {
+
   @Input() categories: Category[] = [];
   @Input() selectedCategory: string = 'All';
   @Output() categorySelected = new EventEmitter<string>();
 
-  defaultCategories: Category[] = [
+  public defaultCategories: Category[] = [
     { id: 'all', name: 'All' },
     { id: 'music', name: 'Music' },
     { id: 'movies', name: 'Movies' },
@@ -30,7 +31,7 @@ export class CategoryFiltersComponent {
     return this.categories.length > 0 ? this.categories : this.defaultCategories;
   }
 
-  selectCategory(category: string): void {
+  public selectCategory(category: string): void {
     this.selectedCategory = category;
     this.categorySelected.emit(category);
   }

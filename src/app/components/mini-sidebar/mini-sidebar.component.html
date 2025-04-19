@@ -1,10 +1,6 @@
 <aside class="mini-sidebar">
   <div class="mini-sidebar-content">
-    <a 
-      class="mini-sidebar-item" 
-      [class.active]="isRouteActive('/')" 
-      (click)="navigateTo('/')"
-    >
+    <a class="mini-sidebar-item" [class.active]="isRouteActive('/')" (click)="navigateTo('/')">
       <mat-icon>home</mat-icon>
       <span>Home</span>
     </a>
@@ -20,11 +16,7 @@
       <mat-icon>subscriptions</mat-icon>
       <span>Subs</span>
     </a>
-    <a 
-      class="mini-sidebar-item" 
-      [class.active]="isRouteActive('/profile')" 
-      (click)="navigateTo('/profile')"
-    >
+    <a class="mini-sidebar-item" [class.active]="isRouteActive('/profile')" (click)="navigateTo('/profile')">
       <mat-icon>video_library</mat-icon>
       <span>Library</span>
     </a>

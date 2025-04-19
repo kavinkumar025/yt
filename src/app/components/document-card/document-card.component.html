@@ -3,25 +3,14 @@
     <div class="file-icon-container">
       <mat-icon class="file-icon">{{ fileIcon }}</mat-icon>
     </div>
-    <button 
-      mat-icon-button 
-      class="download-button" 
-      aria-label="Download document"
-      (click)="downloadDocument($event)"
-    >
+    <button mat-icon-button class="download-button" aria-label="Download document" (click)="downloadDocument($event)">
       <mat-icon>file_download</mat-icon>
     </button>
   </div>
-  
   <div class="document-info">
     <div class="channel-avatar">
-      <img 
-        [src]="document.userPhotoURL" 
-        [alt]="document.userName" 
-        class="avatar"
-      >
+      <img [src]="document.userPhotoURL" [alt]="document.userName" class="avatar">
     </div>
-    
     <div class="document-details">
       <h3 class="document-title">{{ document.fileName }}</h3>
       <p class="channel-name">{{ document.userName }}</p>

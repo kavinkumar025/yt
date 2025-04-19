@@ -19,7 +19,7 @@ export class ProfileComponent implements OnInit {
   user: UserProfile | null = null;
   userVideos: Video[] = [];
   userDocuments: Document[] = [];
-  
+
   activeTab: 'videos' | 'documents' = 'videos';
   isLoadingVideos = true;
   isLoadingDocuments = true;
@@ -27,11 +27,11 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     public authService: AuthService,
-    private videoService: VideoService,
-    private documentService: DocumentService,
-    private dialog: MatDialog,
-    private toastr: ToastrService,
-    private router: Router
+    public videoService: VideoService,
+    public documentService: DocumentService,
+    public dialog: MatDialog,
+    public toastr: ToastrService,
+    public router: Router
   ) {
     // Generate a random color for the banner
     const hue = Math.floor(Math.random() * 360);
@@ -41,7 +41,7 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.authService.currentUser$.subscribe(user => {
       this.user = user;
-      
+
       if (user) {
         this.loadUserVideos(user.uid);
         this.loadUserDocuments(user.uid);
@@ -102,7 +102,7 @@ export class ProfileComponent implements OnInit {
 
   deleteVideo(video: Video, event: Event): void {
     event.stopPropagation();
-    
+
     if (confirm('Are you sure you want to delete this video?')) {
       this.videoService.deleteVideo(video.id).subscribe({
         next: () => {
@@ -119,7 +119,7 @@ export class ProfileComponent implements OnInit {
 
   deleteDocument(document: Document, event: Event): void {
     event.stopPropagation();
-    
+
     if (confirm('Are you sure you want to delete this document?')) {
       this.documentService.deleteDocument(document.id).subscribe({
         next: () => {

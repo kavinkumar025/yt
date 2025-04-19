@@ -4,92 +4,72 @@
     <button mat-icon-button class="menu-button" (click)="onMenuClick()">
       <mat-icon>menu</mat-icon>
     </button>
-    
     <a routerLink="/" class="logo">
       <mat-icon class="logo-icon">SplotShot_activity</mat-icon>
       <span class="logo-text">SplotShot</span>
     </a>
   </div>
-  
   <!-- Center section with search -->
   <div class="header-center">
     <div class="search-container" [class.search-focused]="searchFocused">
-      <input 
-        type="text" 
-        placeholder="Search" 
-        [(ngModel)]="searchQuery"
-        (focus)="onSearchFocus()"
-        (blur)="onSearchBlur()"
-        (keyup.enter)="onSearch()">
+      <input type="text" placeholder="Search" [(ngModel)]="searchQuery" (focus)="onSearchFocus()"
+        (blur)="onSearchBlur()" (keyup.enter)="onSearch()">
     </div>
-    
     <button mat-icon-button class="search-button" (click)="onSearch()">
       <mat-icon>search</mat-icon>
     </button>
-    
     <button mat-icon-button class="mic-button">
       <mat-icon>mic</mat-icon>
     </button>
   </div>
-  
   <!-- Right section with user actions -->
   <div class="header-right">
     <!-- Mobile search button (only visible on small screens) -->
     <button mat-icon-button class="mobile-search-button" (click)="toggleMobileSearch()">
       <mat-icon>search</mat-icon>
     </button>
-    
     <!-- Upload button -->
     <button mat-icon-button class="icon-button" *ngIf="user$ | async" (click)="onUpload()">
       <mat-icon>video_call</mat-icon>
     </button>
-    
     <!-- Notifications -->
     <button mat-icon-button class="icon-button" *ngIf="user$ | async">
       <mat-icon>notifications</mat-icon>
     </button>
-    
     <!-- User avatar or sign in button -->
     <ng-container *ngIf="user$ | async as user; else signInButton">
       <div class="user-avatar" (click)="toggleUserMenu()">
         <img [src]="user.photoURL || 'assets/default-avatar.png'" [alt]="user.displayName">
       </div>
-      
       <!-- User dropdown menu -->
       <div class="user-menu" *ngIf="userMenuOpen">
         <div class="user-menu-header">
           <div class="user-avatar large">
             <img [src]="user.photoURL || 'assets/default-avatar.png'" [alt]="user.displayName">
           </div>
-          
           <div class="user-info">
             <div class="user-name">{{ user.displayName }}</div>
             <div class="user-email">{{ user.email }}</div>
           </div>
         </div>
-        
         <a [routerLink]="['/channel', user.uid]" class="menu-item">
           <mat-icon>account_box</mat-icon>
           Your channel
         </a>
-        
         <a routerLink="/studio" class="menu-item">
           <mat-icon>video_library</mat-icon>
           SplotShot Studio
         </a>
-        
         <a routerLink="/switch-account" class="menu-item">
           <mat-icon>switch_account</mat-icon>
           Switch account
         </a>
-        
         <button class="menu-item sign-out" (click)="onSignOut()">
           <mat-icon>logout</mat-icon>
           Sign out
         </button>
       </div>
     </ng-container>
-    
     <!-- Sign in button -->
     <ng-template #signInButton>
       <button class="sign-in-button" (click)="onSignIn()">
@@ -105,15 +85,9 @@
   <button mat-icon-button class="back-button" (click)="closeMobileSearch()">
     <mat-icon>arrow_back</mat-icon>
   </button>
-  
   <div class="mobile-search">
-    <input 
-      type="text" 
-      placeholder="Search SplotShot" 
-      [(ngModel)]="searchQuery"
-      (keyup.enter)="onSearch()">
+    <input type="text" placeholder="Search SplotShot" [(ngModel)]="searchQuery" (keyup.enter)="onSearch()">
   </div>
-  
   <button mat-icon-button (click)="onSearch()">
     <mat-icon>search</mat-icon>
   </button>

@@ -7,68 +7,43 @@
       <div class="channel-skeleton shimmer"></div>
       <div class="description-skeleton shimmer"></div>
     </div>
-    
     <!-- Video Player -->
     <div class="player-container" *ngIf="!isLoading && video">
       <div class="video-wrapper">
-        <video
-          #videoPlayer
-          [src]="video.videoURL"
-          controls
-          autoplay
-          class="video-player"
-          poster="{{video.thumbnailURL}}"
-        ></video>
+        <video #videoPlayer [src]="video.videoURL" controls autoplay class="video-player"
+          poster="{{video.thumbnailURL}}"></video>
       </div>
-      
       <div class="video-info">
         <h1 class="video-title">{{ video.title }}</h1>
-        
         <div class="video-stats">
           <div class="views-date">
             {{ formatNumber(video.stats.views) }} views • {{ formatTimeAgo(video.createdAt) }}
           </div>
-          
           <div class="video-actions">
-            <button 
-              mat-icon-button 
-              [class.active]="userLikeStatus === 'like'"
-              (click)="likeVideo()"
-              matTooltip="Like"
-            >
+            <button mat-icon-button [class.active]="userLikeStatus === 'like'" (click)="likeVideo()" matTooltip="Like">
               <mat-icon>thumb_up</mat-icon>
               <span>{{ formatNumber(video.stats.likes) }}</span>
             </button>
-            
-            <button 
-              mat-icon-button 
-              [class.active]="userLikeStatus === 'dislike'"
-              (click)="dislikeVideo()"
-              matTooltip="Dislike"
-            >
+            <button mat-icon-button [class.active]="userLikeStatus === 'dislike'" (click)="dislikeVideo()"
+              matTooltip="Dislike">
               <mat-icon>thumb_down</mat-icon>
               <span>{{ formatNumber(video.stats.dislikes) }}</span>
             </button>
-            
             <button mat-icon-button (click)="shareVideo()" matTooltip="Share">
               <mat-icon>share</mat-icon>
               <span>Share</span>
             </button>
-            
             <button mat-icon-button matTooltip="Save">
               <mat-icon>playlist_add</mat-icon>
               <span>Save</span>
             </button>
-            
             <button mat-icon-button matTooltip="More">
               <mat-icon>more_horiz</mat-icon>
             </button>
           </div>
         </div>
       </div>
-      
       <mat-divider></mat-divider>
-      
       <div class="channel-info">
         <div class="channel-details">
           <img [src]="video.userPhotoURL" [alt]="video.userName" class="channel-avatar">
@@ -77,43 +52,26 @@
             <p class="subscriber-count">{{ formatNumber(video.userId?.length || 0) }} subscribers</p>
           </div>
         </div>
-        
-        <button 
-          mat-raised-button 
-          color="primary" 
-          class="subscribe-button"
-          [class.subscribed]="isSubscribed"
-          (click)="subscribeToChannel()"
-        >
+        <button mat-raised-button color="primary" class="subscribe-button" [class.subscribed]="isSubscribed"
+          (click)="subscribeToChannel()">
           {{ isSubscribed ? 'SUBSCRIBED' : 'SUBSCRIBE' }}
         </button>
       </div>
-      
       <div class="video-description">
         <p>{{ video.description }}</p>
       </div>
-      
       <mat-divider></mat-divider>
-      
       <div class="comments-section">
         <h3 class="comments-count">
           {{ formatNumber(video.stats.comments) }} Comments
         </h3>
-        
         <div class="comment-form" *ngIf="authService.currentUser$ | async">
-          <img 
-            [src]="(authService.currentUser$ | async)?.photoURL" 
-            [alt]="(authService.currentUser$ | async)?.displayName" 
-            class="user-avatar"
-          >
+          <img [src]="(authService.currentUser$ | async)?.photoURL"
+            [alt]="(authService.currentUser$ | async)?.displayName" class="user-avatar">
           <form class="comment-input" (ngSubmit)="submitComment()">
             <mat-form-field appearance="outline" class="full-width">
-              <input 
-                matInput 
-                placeholder="Add a comment..." 
-                [formControl]="commentControl"
-                [disabled]="isSubmittingComment"
-              >
+              <input matInput placeholder="Add a comment..." [formControl]="commentControl"
+                [disabled]="isSubmittingComment">
               <mat-error *ngIf="commentControl.hasError('required')">
                 Please enter a comment
               </mat-error>
@@ -122,33 +80,22 @@
               </mat-error>
             </mat-form-field>
             <div class="comment-actions">
-              <button 
-                mat-button 
-                type="button" 
-                (click)="commentControl.reset()" 
-                [disabled]="isSubmittingComment"
-              >
+              <button mat-button type="button" (click)="commentControl.reset()" [disabled]="isSubmittingComment">
                 CANCEL
               </button>
-              <button 
-                mat-raised-button 
-                color="primary" 
-                type="submit" 
-                [disabled]="commentControl.invalid || isSubmittingComment"
-              >
+              <button mat-raised-button color="primary" type="submit"
+                [disabled]="commentControl.invalid || isSubmittingComment">
                 <mat-spinner *ngIf="isSubmittingComment" diameter="20" class="spinner"></mat-spinner>
                 <span *ngIf="!isSubmittingComment">COMMENT</span>
               </button>
             </div>
           </form>
         </div>
-        
         <div class="signin-prompt" *ngIf="!(authService.currentUser$ | async)">
           <p>
             <a href="javascript:void(0)">Sign in</a> to add a comment
           </p>
         </div>
-        
         <!-- Loading Comments Skeleton -->
         <div class="comments-loading" *ngIf="isLoadingComments">
           <div class="comment-skeleton" *ngFor="let i of [1, 2, 3]">
@@ -159,13 +106,11 @@
             </div>
           </div>
         </div>
-        
         <!-- Comments List -->
         <div class="comments-list" *ngIf="!isLoadingComments">
           <div class="empty-comments" *ngIf="comments.length === 0">
             <p>No comments yet. Be the first to comment!</p>
           </div>
-          
           <div class="comment" *ngFor="let comment of comments">
             <img [src]="comment.userPhotoURL" [alt]="comment.userName" class="comment-avatar">
             <div class="comment-content">
@@ -190,26 +135,14 @@
       </div>
     </div>
   </div>
-  
   <div class="recommendations">
     <h3 class="recommendations-title">Up next</h3>
-    
     <!-- Loading Skeleton -->
-    <app-loading-skeleton 
-      *ngIf="isLoadingRecommended" 
-      [count]="5" 
-      type="video" 
-      layout="horizontal"
-    ></app-loading-skeleton>
-    
+    <app-loading-skeleton *ngIf="isLoadingRecommended" [count]="5" type="video"
+      layout="horizontal"></app-loading-skeleton>
     <!-- Recommended Videos -->
     <div class="recommended-videos" *ngIf="!isLoadingRecommended">
-      <app-video-card 
-        *ngFor="let video of recommendedVideos" 
-        [video]="video" 
-        [isHorizontal]="true"
-      ></app-video-card>
-      
+      <app-video-card *ngFor="let video of recommendedVideos" [video]="video" [isHorizontal]="true"></app-video-card>
       <div class="empty-state" *ngIf="recommendedVideos.length === 0">
         <mat-icon>videocam_off</mat-icon>
         <p>No recommendations available</p>

@@ -43,7 +43,6 @@ export class DocumentCardComponent implements OnInit {
 
   setFileIcon(): void {
     const fileType = this.document.fileType;
-    
     if (fileType.includes('pdf')) {
       this.fileIcon = 'picture_as_pdf';
     } else if (fileType.includes('word') || fileType.includes('document')) {
@@ -65,7 +64,6 @@ export class DocumentCardComponent implements OnInit {
 
   downloadDocument(event: Event): void {
     event.stopPropagation();
-    
     this.documentService.incrementDownloadCount(this.document.id).subscribe({
       next: () => {
         // Create a temporary link and click it to download

@@ -1,7 +1,6 @@
 <div class="profile-container" *ngIf="user">
   <div class="channel-header">
     <div class="channel-banner" [style.background-color]="bannerColor"></div>
-    
     <div class="channel-info">
       <div class="channel-details">
         <img [src]="user.photoURL" [alt]="user.displayName" class="channel-avatar">
@@ -12,7 +11,6 @@
           </p>
         </div>
       </div>
-      
       <div class="channel-actions">
         <button mat-raised-button color="primary" (click)="openUploadModal()">
           <mat-icon>cloud_upload</mat-icon>
@@ -20,34 +18,19 @@
         </button>
       </div>
     </div>
-    
     <div class="channel-tabs">
-      <button 
-        mat-button 
-        [class.active]="activeTab === 'videos'"
-        (click)="setActiveTab('videos')"
-      >
+      <button mat-button [class.active]="activeTab === 'videos'" (click)="setActiveTab('videos')">
         VIDEOS
       </button>
-      <button 
-        mat-button 
-        [class.active]="activeTab === 'documents'"
-        (click)="setActiveTab('documents')"
-      >
+      <button mat-button [class.active]="activeTab === 'documents'" (click)="setActiveTab('documents')">
         DOCUMENTS
       </button>
     </div>
   </div>
-  
   <div class="channel-content">
     <!-- Videos Tab -->
     <div class="tab-content" *ngIf="activeTab === 'videos'">
-      <app-loading-skeleton 
-        *ngIf="isLoadingVideos" 
-        [count]="4" 
-        type="video"
-      ></app-loading-skeleton>
-      
+      <app-loading-skeleton *ngIf="isLoadingVideos" [count]="4" type="video"></app-loading-skeleton>
       <div class="content-grid" *ngIf="!isLoadingVideos">
         <div class="empty-state" *ngIf="userVideos.length === 0">
           <mat-icon>videocam_off</mat-icon>
@@ -57,29 +40,18 @@
             UPLOAD VIDEO
           </button>
         </div>
-        
         <div class="video-item" *ngFor="let video of userVideos">
           <app-video-card [video]="video"></app-video-card>
-          <button 
-            mat-icon-button 
-            class="delete-button" 
-            (click)="deleteVideo(video, $event)"
-            matTooltip="Delete video"
-          >
+          <button mat-icon-button class="delete-button" (click)="deleteVideo(video, $event)" matTooltip="Delete video">
             <mat-icon>delete</mat-icon>
           </button>
         </div>
       </div>
     </div>
-    
+
     <!-- Documents Tab -->
     <div class="tab-content" *ngIf="activeTab === 'documents'">
-      <app-loading-skeleton 
-        *ngIf="isLoadingDocuments" 
-        [count]="4" 
-        type="document"
-      ></app-loading-skeleton>
-      
+      <app-loading-skeleton *ngIf="isLoadingDocuments" [count]="4" type="document"></app-loading-skeleton>
       <div class="content-grid" *ngIf="!isLoadingDocuments">
         <div class="empty-state" *ngIf="userDocuments.length === 0">
           <mat-icon>insert_drive_file</mat-icon>
@@ -89,15 +61,10 @@
             UPLOAD DOCUMENT
           </button>
         </div>
-        
         <div class="document-item" *ngFor="let document of userDocuments">
           <app-document-card [document]="document"></app-document-card>
-          <button 
-            mat-icon-button 
-            class="delete-button" 
-            (click)="deleteDocument(document, $event)"
-            matTooltip="Delete document"
-          >
+          <button mat-icon-button class="delete-button" (click)="deleteDocument(document, $event)"
+            matTooltip="Delete document">
             <mat-icon>delete</mat-icon>
           </button>
         </div>

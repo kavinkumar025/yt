@@ -17,16 +17,15 @@ export class LoginModalComponent implements OnInit {
   hidePassword = true;
 
   constructor(
-    private fb: FormBuilder,
-    private dialogRef: MatDialogRef<LoginModalComponent>,
-    private authService: AuthService,
-    private toastr: ToastrService
+    public fb: FormBuilder,
+    public dialogRef: MatDialogRef<LoginModalComponent>,
+    public authService: AuthService,
+    public toastr: ToastrService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
-
     this.registerForm = this.fb.group({
       displayName: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
@@ -62,7 +61,6 @@ export class LoginModalComponent implements OnInit {
   login(): void {
     this.isLoading = true;
     const { email, password } = this.loginForm.value;
-    
     this.authService.signInWithEmail(email, password).subscribe({
       next: () => {
         this.isLoading = false;
@@ -79,7 +77,6 @@ export class LoginModalComponent implements OnInit {
   register(): void {
     this.isLoading = true;
     const { displayName, email, password } = this.registerForm.value;
-    
     this.authService.register(email, password, displayName).subscribe({
       next: () => {
         this.isLoading = false;
@@ -95,7 +92,6 @@ export class LoginModalComponent implements OnInit {
 
   signInWithGoogle(): void {
     this.isLoading = true;
-    
     this.authService.signInWithGoogle().subscribe({
       next: () => {
         this.isLoading = false;
@@ -108,10 +104,8 @@ export class LoginModalComponent implements OnInit {
       }
     });
   }
-
   getErrorMessage(error: any): string {
     let message = 'An error occurred. Please try again.';
-    
     if (error?.code) {
       switch (error.code) {
         case 'auth/user-not-found':
@@ -136,10 +130,8 @@ export class LoginModalComponent implements OnInit {
           message = error.message || message;
       }
     }
-    
     return message;
   }
-
   closeDialog(): void {
     this.dialogRef.close();
   }
