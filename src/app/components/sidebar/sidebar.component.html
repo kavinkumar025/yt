@@ -1,6 +1,8 @@
 <div class="sidebar" [class.expanded]="expanded" [class.collapsed]="!expanded">
   <!-- Main navigation -->
   <div class="sidebar-section">
+    <div *ngIf="expanded" class="section-title">🏠 Main</div>
+    
     <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="sidebar-item">
       <mat-icon>home</mat-icon>
       <span *ngIf="expanded" class="item-text">Home</span>
@@ -28,7 +30,7 @@
   
   <!-- Signed in section -->
   <div class="sidebar-section" *ngIf="user$ | async; else notSignedIn">
-    <div *ngIf="expanded" class="section-title">You</div>
+    <div *ngIf="expanded" class="section-title">👤 You</div>
     
     <a [routerLink]="['/channel', (user$ | async)?.uid]" routerLinkActive="active" class="sidebar-item">
       <mat-icon>account_box</mat-icon>
@@ -84,7 +86,7 @@
   
   <!-- Subscriptions section (only show when expanded and signed in) -->
   <div class="sidebar-section" *ngIf="expanded && (user$ | async)">
-    <div class="section-title">Subscriptions</div>
+    <div class="section-title">📺 Subscriptions</div>
     
     <ng-container *ngIf="subscribedChannels$ | async as channels">
       <ng-container *ngIf="channels.length; else noSubscriptions">
@@ -101,7 +103,7 @@
       
       <ng-template #noSubscriptions>
         <div class="empty-state">
-          <p>Subscriptions will appear here</p>
+          <p>🔔 Subscriptions will appear here</p>
         </div>
       </ng-template>
     </ng-container>
@@ -111,7 +113,7 @@
   
   <!-- Explore section -->
   <div class="sidebar-section">
-    <div *ngIf="expanded" class="section-title">Explore</div>
+    <div *ngIf="expanded" class="section-title">🌟 Explore</div>
     
     <a routerLink="/trending" routerLinkActive="active" class="sidebar-item">
       <mat-icon>trending_up</mat-icon>

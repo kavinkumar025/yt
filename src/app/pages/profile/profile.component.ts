@@ -46,7 +46,9 @@ export class ProfileComponent implements OnInit {
         this.loadUserVideos(user.uid);
         this.loadUserDocuments(user.uid);
       } else {
-        this.router.navigate(['/']);
+        // Don't redirect, just show sign-in prompt
+        this.isLoadingVideos = false;
+        this.isLoadingDocuments = false;
       }
     });
   }
@@ -103,35 +105,39 @@ export class ProfileComponent implements OnInit {
   deleteVideo(video: Video, event: Event): void {
     event.stopPropagation();
 
-    if (confirm('Are you sure you want to delete this video?')) {
-      this.videoService.deleteVideo(video.id).subscribe({
-        next: () => {
-          this.toastr.success('Video deleted successfully');
-          this.userVideos = this.userVideos.filter(v => v.id !== video.id);
-        },
-        error: (error) => {
-          console.error('Error deleting video:', error);
-          this.toastr.error('Error deleting video. Please try again.');
-        }
-      });
+    if (!confirm('Are you sure you want to delete this video? This action cannot be undone.')) {
+      return;
     }
+
+    this.videoService.deleteVideo(video.id).subscribe({
+      next: () => {
+        this.toastr.success('Video deleted successfully');
+        this.userVideos = this.userVideos.filter(v => v.id !== video.id);
+      },
+      error: (error) => {
+        console.error('Error deleting video:', error);
+        this.toastr.error('Error deleting video. Please try again.');
+      }
+    });
   }
 
   deleteDocument(document: Document, event: Event): void {
     event.stopPropagation();
 
-    if (confirm('Are you sure you want to delete this document?')) {
-      this.documentService.deleteDocument(document.id).subscribe({
-        next: () => {
-          this.toastr.success('Document deleted successfully');
-          this.userDocuments = this.userDocuments.filter(d => d.id !== document.id);
-        },
-        error: (error) => {
-          console.error('Error deleting document:', error);
-          this.toastr.error('Error deleting document. Please try again.');
-        }
-      });
+    if (!confirm('Are you sure you want to delete this document? This action cannot be undone.')) {
+      return;
     }
+
+    this.documentService.deleteDocument(document.id).subscribe({
+      next: () => {
+        this.toastr.success('Document deleted successfully');
+        this.userDocuments = this.userDocuments.filter(d => d.id !== document.id);
+      },
+      error: (error) => {
+        console.error('Error deleting document:', error);
+        this.toastr.error('Error deleting document. Please try again.');
+      }
+    });
   }
 
   formatSubscribers(count: number): string {

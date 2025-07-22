@@ -21,6 +21,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ToastrModule } from 'ngx-toastr';
 import { MatSelectModule } from '@angular/material/select';
 
@@ -72,6 +74,8 @@ import { VideoPlayerComponent } from './pages/video-player/video-player.componen
     MatProgressBarModule,
     MatProgressSpinnerModule,
     MatTabsModule,
+    MatDividerModule,
+    MatTooltipModule,
     ToastrModule.forRoot({
       timeOut: 3000,
       positionClass: 'toast-bottom-right',

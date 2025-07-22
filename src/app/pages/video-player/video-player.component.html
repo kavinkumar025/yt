@@ -10,9 +10,29 @@
     <!-- Video Player -->
     <div class="player-container" *ngIf="!isLoading && video">
       <div class="video-wrapper">
-        <video #videoPlayer [src]="video.videoURL" controls autoplay class="video-player"
-          poster="{{video.thumbnailURL}}"></video>
+        <video #videoPlayer [src]="video.videoURL" controls class="video-player"
+          poster="{{video.thumbnailURL}}" (loadstart)="onVideoStart()"></video>
+        
+        <!-- Overlay Controls -->
+        <div class="video-overlay-controls">
+          <app-video-quality-selector 
+            [currentQuality]="'720p'"
+            [availableQualities]="['1080p', '720p', '480p', '360p']">
+          </app-video-quality-selector>
+          
+          <app-video-speed-control 
+            [currentSpeed]="1"
+            [availableSpeeds]="[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2]">
+          </app-video-speed-control>
+        </div>
       </div>
+      
+      <!-- Video Progress Bar -->
+      <app-video-progress 
+        [currentTime]="0"
+        [duration]="0"
+        [buffered]="0">
+      </app-video-progress>
       <div class="video-info">
         <h1 class="video-title">{{ video.title }}</h1>
         <div class="video-stats">
@@ -20,12 +40,19 @@
             {{ formatNumber(video.stats.views) }} views • {{ formatTimeAgo(video.createdAt) }}
           </div>
           <div class="video-actions">
-            <button mat-icon-button [class.active]="userLikeStatus === 'like'" (click)="likeVideo()" matTooltip="Like">
+            <button mat-icon-button 
+              [class.active]="userLikeStatus === 'like'" 
+              (click)="likeVideo()" 
+              matTooltip="Like"
+              [disabled]="!authService.getCurrentUser()">
               <mat-icon>thumb_up</mat-icon>
               <span>{{ formatNumber(video.stats.likes) }}</span>
             </button>
-            <button mat-icon-button [class.active]="userLikeStatus === 'dislike'" (click)="dislikeVideo()"
-              matTooltip="Dislike">
+            <button mat-icon-button 
+              [class.active]="userLikeStatus === 'dislike'" 
+              (click)="dislikeVideo()"
+              matTooltip="Dislike"
+              [disabled]="!authService.getCurrentUser()">
               <mat-icon>thumb_down</mat-icon>
               <span>{{ formatNumber(video.stats.dislikes) }}</span>
             </button>
@@ -46,27 +73,41 @@
       <mat-divider></mat-divider>
       <div class="channel-info">
         <div class="channel-details">
-          <img [src]="video.userPhotoURL" [alt]="video.userName" class="channel-avatar">
+          <img [src]="video.userPhotoURL || 'assets/default-avatar.png'" [alt]="video.userName" class="channel-avatar">
           <div class="channel-metadata">
             <h3 class="channel-name">{{ video.userName }}</h3>
-            <p class="subscriber-count">{{ formatNumber(video.userId?.length || 0) }} subscribers</p>
+            <p class="subscriber-count">{{ formatNumber(video.stats.subscribers || 0) }} subscribers</p>
           </div>
         </div>
-        <button mat-raised-button color="primary" class="subscribe-button" [class.subscribed]="isSubscribed"
-          (click)="subscribeToChannel()">
+        <button mat-raised-button 
+          color="primary" 
+          class="subscribe-button" 
+          [class.subscribed]="isSubscribed"
+          (click)="subscribeToChannel()"
+          [disabled]="!authService.getCurrentUser() || video.userId === authService.getCurrentUser()?.uid">
+          <mat-icon>{{ isSubscribed ? 'notifications' : 'notifications_none' }}</mat-icon>
           {{ isSubscribed ? 'SUBSCRIBED' : 'SUBSCRIBE' }}
         </button>
       </div>
-      <div class="video-description">
+      <div class="video-description" *ngIf="video.description">
         <p>{{ video.description }}</p>
       </div>
       <mat-divider></mat-divider>
       <div class="comments-section">
-        <h3 class="comments-count">
-          {{ formatNumber(video.stats.comments) }} Comments
-        </h3>
-        <div class="comment-form" *ngIf="authService.currentUser$ | async">
-          <img [src]="(authService.currentUser$ | async)?.photoURL"
+        <div class="comments-header">
+          <h3 class="comments-count">
+            <mat-icon>comment</mat-icon>
+            {{ formatNumber(video.stats.comments) }} Comments
+          </h3>
+          <div class="comments-sort">
+            <button mat-button>
+              <mat-icon>sort</mat-icon>
+              Sort by
+            </button>
+          </div>
+        </div>
+        <div class="comment-form" *ngIf="authService.currentUser$ | async; else signInPrompt">
+          <img [src]="(authService.currentUser$ | async)?.photoURL || 'assets/default-avatar.png'"
             [alt]="(authService.currentUser$ | async)?.displayName" class="user-avatar">
           <form class="comment-input" (ngSubmit)="submitComment()">
             <mat-form-field appearance="outline" class="full-width">
@@ -79,23 +120,25 @@
                 Comment cannot exceed 1000 characters
               </mat-error>
             </mat-form-field>
-            <div class="comment-actions">
+            <div class="comment-actions" *ngIf="commentControl.value?.trim()">
               <button mat-button type="button" (click)="commentControl.reset()" [disabled]="isSubmittingComment">
                 CANCEL
               </button>
               <button mat-raised-button color="primary" type="submit"
-                [disabled]="commentControl.invalid || isSubmittingComment">
+                [disabled]="commentControl.invalid || isSubmittingComment || !commentControl.value?.trim()">
                 <mat-spinner *ngIf="isSubmittingComment" diameter="20" class="spinner"></mat-spinner>
                 <span *ngIf="!isSubmittingComment">COMMENT</span>
               </button>
             </div>
           </form>
         </div>
-        <div class="signin-prompt" *ngIf="!(authService.currentUser$ | async)">
-          <p>
-            <a href="javascript:void(0)">Sign in</a> to add a comment
-          </p>
-        </div>
+        <ng-template #signInPrompt>
+          <div class="signin-prompt">
+            <p>
+              <a href="javascript:void(0)" (click)="signIn()">Sign in</a> to add a comment
+            </p>
+          </div>
+        </ng-template>
         <!-- Loading Comments Skeleton -->
         <div class="comments-loading" *ngIf="isLoadingComments">
           <div class="comment-skeleton" *ngFor="let i of [1, 2, 3]">
@@ -112,7 +155,10 @@
             <p>No comments yet. Be the first to comment!</p>
           </div>
           <div class="comment" *ngFor="let comment of comments">
-            <img [src]="comment.userPhotoURL" [alt]="comment.userName" class="comment-avatar">
+            <img [src]="comment.userPhotoURL || 'assets/default-avatar.png'" 
+              [alt]="comment.userName" 
+              class="comment-avatar"
+              onerror="this.src='assets/default-avatar.png'">
             <div class="comment-content">
               <div class="comment-header">
                 <span class="comment-author">{{ comment.userName }}</span>
@@ -120,14 +166,15 @@
               </div>
               <p class="comment-text">{{ comment.text }}</p>
               <div class="comment-actions">
-                <button mat-icon-button matTooltip="Like">
+                <button mat-icon-button matTooltip="Like" [disabled]="!authService.getCurrentUser()">
                   <mat-icon>thumb_up</mat-icon>
-                  <span>{{ comment.likes }}</span>
+                  <span>{{ comment.likes || 0 }}</span>
                 </button>
-                <button mat-icon-button matTooltip="Dislike">
+                <button mat-icon-button matTooltip="Dislike" [disabled]="!authService.getCurrentUser()">
                   <mat-icon>thumb_down</mat-icon>
+                  <span>{{ comment.dislikes || 0 }}</span>
                 </button>
-                <button mat-button>REPLY</button>
+                <button mat-button [disabled]="!authService.getCurrentUser()">REPLY</button>
               </div>
             </div>
           </div>
@@ -136,7 +183,15 @@
     </div>
   </div>
   <div class="recommendations">
-    <h3 class="recommendations-title">Up next</h3>
+    <div class="recommendations-header">
+      <h3 class="recommendations-title">
+        <mat-icon>playlist_play</mat-icon>
+        Up next
+      </h3>
+      <button mat-icon-button matTooltip="Autoplay">
+        <mat-icon>play_circle</mat-icon>
+      </button>
+    </div>
     <!-- Loading Skeleton -->
     <app-loading-skeleton *ngIf="isLoadingRecommended" [count]="5" type="video"
       layout="horizontal"></app-loading-skeleton>

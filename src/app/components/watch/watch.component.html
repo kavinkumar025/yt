@@ -1,60 +1,179 @@
-<div class="video-details">
+<div class="video-details" *ngIf="videoData">
   <!-- Video player section -->
   <div class="video-player">
-    <video controls [src]="videoData.videoURL" class="video-element">
+    <video 
+      controls 
+      [src]="videoData.videoURL" 
+      [poster]="videoData.thumbnailURL"
+      class="video-element"
+      (play)="onVideoPlay()">
       Your browser does not support the video tag.
     </video>
   </div>
-  <!-- [poster]="videoData.thumbnailUrl" -->
+  
   <!-- Video Information Section -->
   <div class="video-info">
-    <h1 class="video-title">{{ videoData?.title }}</h1>
-    <p class="video-description">{{ videoData?.description }}</p>
-    <div class="video-stats">
-      <div class="video-stat">
-        <span><i class="fas fa-eye"></i> {{ videoData?.stats?.views || 0 }} Views</span>
+    <h1 class="video-title">{{ videoData.title }}</h1>
+    <div class="video-meta">
+      <span class="views">{{ videoData.stats.views | number }} views</span>
+      <span class="upload-date">{{ videoData.createdAt | date }}</span>
+    </div>
+    
+    <!-- Video Actions -->
+    <div class="video-actions">
+      <button 
+        class="action-btn like-btn" 
+        [class.active]="liked" 
+        (click)="onLike()"
+        [disabled]="liked">
+        <i class="fas fa-thumbs-up"></i>
+        <span>{{ videoData.stats.likes | number }}</span>
+      </button>
+      
+      <button 
+        class="action-btn dislike-btn" 
+        [class.active]="disliked" 
+        (click)="onDislike()"
+        [disabled]="disliked">
+        <i class="fas fa-thumbs-down"></i>
+        <span>{{ videoData.stats.dislikes | number }}</span>
+      </button>
+      
+      <button class="action-btn share-btn" (click)="shareVideo()">
+        <i class="fas fa-share"></i>
+        <span>Share</span>
+      </button>
+      
+      <button class="action-btn cast-btn" (click)="castScreen()">
+        <i class="fas fa-cast"></i>
+        <span>Cast</span>
+      </button>
+    </div>
+    
+    <!-- Channel Info -->
+    <div class="channel-info">
+      <div class="channel-details">
+        <div class="channel-avatar-container">
+          <img *ngIf="videoData.userPhotoURL; else defaultAvatar" 
+               [src]="videoData.userPhotoURL" 
+               alt="Channel Avatar" 
+               class="channel-avatar"
+               (error)="$event.target.style.display='none'">
+          <ng-template #defaultAvatar>
+            <div class="default-avatar">
+              <i class="fas fa-user"></i>
+            </div>
+          </ng-template>
+        </div>
+        <div class="channel-meta">
+          <h3 class="channel-name">{{ videoData.userName }}</h3>
+          <span class="upload-date">Published {{ videoData.createdAt | date }}</span>
+        </div>
       </div>
-      <div class="video-stat">
-        <span><i class="fas fa-thumbs-up"></i> {{ videoData?.stats?.likes || 0 }} Likes</span>
-      </div>
-      <div class="video-stat">
-        <span><i class="fas fa-thumbs-down"></i> {{ videoData?.stats?.dislikes || 0 }} Dislikes</span>
-      </div>
+    </div>
+    
+    <!-- Video Description -->
+    <div class="video-description">
+      <p>{{ videoData.description }}</p>
     </div>
   </div>
 
   <!-- Comment Section -->
   <div class="comment-section">
-    <h3>Comments</h3>
+    <h3 class="comment-header">
+      <i class="fas fa-comments"></i>
+      {{ videoData.stats.comments | number }} Comments
+    </h3>
 
     <!-- Comment Input Area -->
     <div class="comment-input">
-      <textarea [(ngModel)]="commentText" placeholder="Add a comment..." rows="3"></textarea>
-      <button [disabled]="!commentText.trim()">Post Comment</button>
-    </div>
-    <!-- (click)="addComment()"  -->
-
-    <!-- Comment List -->
-    <div *ngIf="comments.length > 0; else noComments" class="comment-list">
-      <div class="comment" *ngFor="let comment of comments">
-        <div class="comment-header">
-          <img [src]="comment.userPhotoURL || 'assets/default-avatar.png'" alt="User photo" class="comment-avatar" />
-          <span class="comment-username">{{ comment.userName }}</span>
+      <div class="comment-form">
+        <div class="user-avatar-container">
+          <div class="default-avatar user-avatar">
+            <i class="fas fa-user"></i>
+          </div>
         </div>
-        <p class="comment-text">{{ comment.text }}</p>
-        <div class="comment-footer">
-          <span class="comment-time">{{ comment.createdAt | date: 'short' }}</span>
-          <div class="comment-likes">
-            <i class="fas fa-thumbs-up"></i> {{ comment.likes }}
-            <i class="fas fa-thumbs-down"></i> {{ comment.dislikes }}
+        <div class="input-container">
+          <textarea 
+            [(ngModel)]="commentText" 
+            placeholder="Add a comment..." 
+            rows="2"
+            class="comment-textarea"></textarea>
+          <div class="comment-actions">
+            <button 
+              class="cancel-btn" 
+              (click)="commentText = ''"
+              [disabled]="!commentText.trim()">
+              Cancel
+            </button>
+            <button 
+              class="submit-btn" 
+              (click)="addComment()"
+              [disabled]="!commentText.trim()">
+              Comment
+            </button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- No Comments Message -->
-    <ng-template #noComments>
-      <p>No comments yet. Be the first to comment!</p>
-    </ng-template>
+    <!-- Comment List -->
+    <div class="comment-list">
+      <div *ngIf="comments.length > 0; else noComments">
+        <div class="comment" *ngFor="let comment of comments">
+          <div class="comment-content">
+            <div class="comment-avatar-container">
+              <img *ngIf="comment.userPhotoURL; else commentDefaultAvatar" 
+                   [src]="comment.userPhotoURL" 
+                   alt="User Avatar" 
+                   class="comment-avatar"
+                   (error)="$event.target.style.display='none'">
+              <ng-template #commentDefaultAvatar>
+                <div class="default-avatar comment-avatar">
+                  <i class="fas fa-user"></i>
+                </div>
+              </ng-template>
+            </div>
+            <div class="comment-details">
+              <div class="comment-header">
+                <span class="comment-username">{{ comment.userName }}</span>
+                <span class="comment-time">{{ comment.createdAt | date: 'short' }}</span>
+              </div>
+              <p class="comment-text">{{ comment.text }}</p>
+              <div class="comment-actions">
+                <button class="comment-action-btn">
+                  <i class="fas fa-thumbs-up"></i>
+                  <span>{{ comment.likes || 0 }}</span>
+                </button>
+                <button class="comment-action-btn">
+                  <i class="fas fa-thumbs-down"></i>
+                  <span>{{ comment.dislikes || 0 }}</span>
+                </button>
+                <button class="comment-action-btn reply-btn">
+                  <i class="fas fa-reply"></i>
+                  Reply
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- No Comments Message -->
+      <ng-template #noComments>
+        <div class="no-comments">
+          <i class="fas fa-comment-slash"></i>
+          <p>No comments yet. Be the first to comment!</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>
+
+<!-- Loading State -->
+<div *ngIf="!videoData" class="loading-container">
+  <div class="loading-spinner">
+    <i class="fas fa-spinner fa-spin"></i>
+    <p>Loading video...</p>
   </div>
 </div>

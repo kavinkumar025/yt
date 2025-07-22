@@ -151,20 +151,34 @@ export class VideoPlayerComponent implements OnInit, OnDestroy {
       return;
     }
 
+    // Store original state for rollback
+    const originalLikes = this.video.stats.likes;
+    const originalDislikes = this.video.stats.dislikes;
+    const originalStatus = this.userLikeStatus;
+
+    // Optimistically update UI
+    if (this.userLikeStatus === 'like') {
+      this.userLikeStatus = null;
+      this.video.stats.likes = Math.max(0, this.video.stats.likes - 1);
+    } else {
+      if (this.userLikeStatus === 'dislike') {
+        this.video.stats.dislikes = Math.max(0, this.video.stats.dislikes - 1);
+      }
+      this.userLikeStatus = 'like';
+      this.video.stats.likes++;
+    }
+
     this.videoService.likeVideo(this.video.id).subscribe({
       next: () => {
-        if (this.userLikeStatus === 'like') {
-          this.userLikeStatus = null;
-          this.video.stats.likes--;
-        } else {
-          if (this.userLikeStatus === 'dislike') {
-            this.video.stats.dislikes--;
-          }
-          this.userLikeStatus = 'like';
-          this.video.stats.likes++;
-        }
+        // Success - UI already updated optimistically
+        this.toastr.success('Video liked!');
       },
       error: (error) => {
+        // Rollback on error
+        this.video.stats.likes = originalLikes;
+        this.video.stats.dislikes = originalDislikes;
+        this.userLikeStatus = originalStatus;
+        
         console.error('Error liking video:', error);
         this.toastr.error('Error liking video. Please try again.');
       }
@@ -173,24 +187,40 @@ export class VideoPlayerComponent implements OnInit, OnDestroy {
 
   dislikeVideo(): void {
     if (!this.video) return;
+    
     if (!this.authService.getCurrentUser()) {
       this.toastr.info('Please sign in to dislike videos', 'Sign in required');
       return;
     }
+
+    // Store original state for rollback
+    const originalLikes = this.video.stats.likes;
+    const originalDislikes = this.video.stats.dislikes;
+    const originalStatus = this.userLikeStatus;
+
+    // Optimistically update UI
+    if (this.userLikeStatus === 'dislike') {
+      this.userLikeStatus = null;
+      this.video.stats.dislikes = Math.max(0, this.video.stats.dislikes - 1);
+    } else {
+      if (this.userLikeStatus === 'like') {
+        this.video.stats.likes = Math.max(0, this.video.stats.likes - 1);
+      }
+      this.userLikeStatus = 'dislike';
+      this.video.stats.dislikes++;
+    }
+    
     this.videoService.dislikeVideo(this.video.id).subscribe({
       next: () => {
-        if (this.userLikeStatus === 'dislike') {
-          this.userLikeStatus = null;
-          this.video.stats.dislikes--;
-        } else {
-          if (this.userLikeStatus === 'like') {
-            this.video.stats.likes--;
-          }
-          this.userLikeStatus = 'dislike';
-          this.video.stats.dislikes++;
-        }
+        // Success - UI already updated optimistically
+        this.toastr.success('Video disliked!');
       },
       error: (error) => {
+        // Rollback on error
+        this.video.stats.likes = originalLikes;
+        this.video.stats.dislikes = originalDislikes;
+        this.userLikeStatus = originalStatus;
+        
         console.error('Error disliking video:', error);
         this.toastr.error('Error disliking video. Please try again.');
       }
@@ -230,23 +260,37 @@ export class VideoPlayerComponent implements OnInit, OnDestroy {
 
   submitComment(): void {
     if (!this.video) return;
+    
     if (!this.authService.getCurrentUser()) {
       this.toastr.info('Please sign in to comment', 'Sign in required');
       return;
     }
+    
     if (this.commentControl.invalid) {
+      this.commentControl.markAsTouched();
       return;
     }
+
     this.isSubmittingComment = true;
-    const commentText = this.commentControl.value;
+    const commentText = this.commentControl.value?.trim() || '';
+
+    if (!commentText) {
+      this.isSubmittingComment = false;
+      this.toastr.error('Please enter a comment');
+      return;
+    }
+
     this.videoService.addComment(this.video.id, commentText).subscribe({
       next: (commentId) => {
         this.isSubmittingComment = false;
         this.commentControl.reset();
+        
         // Reload comments to show the new one
         this.loadComments(this.video.id);
-        // Update comment count
+        
+        // Update comment count optimistically
         this.video.stats.comments++;
+        
         this.toastr.success('Comment added successfully');
       },
       error: (error) => {
@@ -271,7 +315,29 @@ export class VideoPlayerComponent implements OnInit, OnDestroy {
     return num.toString();
   }
 
+  onVideoStart(): void {
+    // Increment view count when video starts playing
+    if (this.video) {
+      this.videoService.incrementViewCount(this.video.id).subscribe({
+        next: () => {
+          // Update view count in UI
+          this.video.stats.views++;
+        },
+        error: (error) => {
+          console.error('Error incrementing view count:', error);
+        }
+      });
+    }
+  }
+
+  signIn(): void {
+    // Implement sign in functionality or redirect to login
+    this.toastr.info('Please use the sign in button in the header', 'Sign In');
+  }
+
   shareVideo(): void {
+    if (!this.video) return;
+    
     if (navigator.share) {
       navigator.share({
         title: this.video.title,

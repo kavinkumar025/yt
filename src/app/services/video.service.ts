@@ -450,7 +450,7 @@ export class VideoService {
           }
         } else {
           // New like
-          batch.push(updateVideoDoc(likeRef, {
+          batch.push(setDoc(likeRef, {
             userId: currentUser.uid,
             videoId: videoId,
             type: 'like',
@@ -541,7 +541,7 @@ export class VideoService {
           }
         } else {
           // New dislike
-          batch.push(updateVideoDoc(likeRef, {
+          batch.push(setDoc(likeRef, {
             userId: currentUser.uid,
             videoId: videoId,
             type: 'dislike',
@@ -791,17 +791,4 @@ export class VideoService {
   }
 
 
-}
-
-function updateVideoDoc(docRef: any, data: any, options?: any): Promise<void> {
-  if (options) {
-    return updateDoc(docRef, data);
-  } else {
-    const ref = doc(collection(docRef.firestore, docRef.path.split('/')[0]), docRef.id);
-    return updateDoc(ref, data)
-      .catch(() => {
-        // If document doesn't exist, create it
-        return updateDoc(docRef, data);
-      });
-  }
 }

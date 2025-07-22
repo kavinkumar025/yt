@@ -1,22 +1,41 @@
-/* SplotShot theme CSS */
+/* SplotShot Dark Theme CSS */
 
-/* Light theme (default) */
+/* Dark theme variables (default) */
 :root {
-  --yt-red: #FF0000;
-  --yt-light-bg: #FFFFFF;
-  --yt-light-surface: #F9F9F9;
-  --yt-light-text: #0F0F0F;
-  --yt-light-secondary-text: #606060;
-  --yt-light-border: #E5E5E5;
+  --yt-red: #FF6B6B;
+  --bg-color: #0a0a0f;
+  --surface-color: rgba(255, 255, 255, 0.1);
+  --text-color: #e2e8f0;
+  --secondary-text-color: rgba(255, 255, 255, 0.7);
+  --border-color: rgba(255, 255, 255, 0.2);
+  --divider-color: rgba(255, 255, 255, 0.1);
+  --hover-color: rgba(255, 255, 255, 0.1);
+  --search-button-bg: rgba(255, 255, 255, 0.1);
+  
+  /* YouTube-inspired variables with dark theme */
+  --yt-light-bg: #0a0a0f;
+  --yt-light-surface: rgba(255, 255, 255, 0.1);
+  --yt-light-text: #e2e8f0;
+  --yt-light-secondary-text: rgba(255, 255, 255, 0.7);
+  --yt-light-border: rgba(255, 255, 255, 0.2);
 }
 
-/* Dark theme */
+/* Dark theme class (for compatibility) */
 .dark-theme {
-  --yt-dark-bg: #0F0F0F;
-  --yt-dark-surface: #202020;
-  --yt-dark-text: #FFFFFF;
-  --yt-dark-secondary-text: #AAAAAA;
-  --yt-dark-border: #383838;
+  --yt-dark-bg: #0a0a0f;
+  --yt-dark-surface: rgba(255, 255, 255, 0.1);
+  --yt-dark-text: #e2e8f0;
+  --yt-dark-secondary-text: rgba(255, 255, 255, 0.7);
+  --yt-dark-border: rgba(255, 255, 255, 0.2);
+  
+  --bg-color: #0a0a0f;
+  --surface-color: rgba(255, 255, 255, 0.1);
+  --text-color: #e2e8f0;
+  --secondary-text-color: rgba(255, 255, 255, 0.7);
+  --border-color: rgba(255, 255, 255, 0.2);
+  --divider-color: rgba(255, 255, 255, 0.1);
+  --hover-color: rgba(255, 255, 255, 0.1);
+  --search-button-bg: rgba(255, 255, 255, 0.1);
 }
 
 /* Material theme customization */

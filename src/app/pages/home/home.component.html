@@ -1,93 +1,301 @@
 <div class="home-container">
-  <!-- Loading state -->
-  <div class="loading-container" *ngIf="loading">
-    <mat-spinner [diameter]="50"></mat-spinner>
-  </div>
-  <!-- Content when loaded -->
-  <ng-container *ngIf="!loading">
-    <!-- Trending section -->
-    <section class="trending-section">
-      <h2 class="section-title">Trending</h2>
-      <div class="video-grid trending-grid">
-        <!-- Show skeleton if data is loading or empty -->
-        <ng-container *ngIf="(trendingVideos$ | async)?.length; else trendingSkeleton">
-          <div class="video-card" *ngFor="let video of trendingVideos$ | async">
-            <a [routerLink]="['/watch', video.id]" class="thumbnail-container">
-              <img [src]="video.thumbnailURL" [alt]="video.title" class="thumbnail">
-              <span class="duration">{{ video.duration }}</span>
-            </a>
-            <div class="video-info">
-              <a [routerLink]="['/channel', video.userId]" class="channel-avatar">
-                <img [src]="video.userPhotoURL || 'assets/default-avatar.png'" [alt]="video.userName">
-              </a>
-              <div class="video-details">
-                <a [routerLink]="['/watch', video.id]" class="video-title">{{ video.title }}</a>
-                <a [routerLink]="['/channel', video.userId]" class="channel-name">{{ video.userName }}</a>
-                <div class="video-meta">
-                  <span>{{ video.stats.views | number }} views</span>
-                  <span class="dot-separator">•</span>
-                  <span>{{ video.createdAt | date }}</span>
-                </div>
-              </div>
+  <!-- Enhanced Hero Section -->
+  <section class="hero-section" *ngIf="!loading">
+    <div class="hero-content">
+      <div class="hero-text">
+        <div class="hero-badge">
+          <mat-icon>stars</mat-icon>
+          <span>New Platform Launch</span>
+        </div>
+        <h1 class="hero-title">
+          <span class="gradient-text">Discover</span> 
+          <span class="highlight">Amazing</span> Content
+        </h1>
+        <p class="hero-subtitle">
+          Experience the future of video streaming with cutting-edge technology, 
+          personalized recommendations, and creator-friendly features.
+        </p>
+        <div class="hero-actions">
+          <button mat-raised-button class="cta-primary">
+            <mat-icon>play_arrow</mat-icon>
+            Start Watching
+          </button>
+          <button mat-stroked-button class="cta-secondary">
+            <mat-icon>video_call</mat-icon>
+            Create Content
+          </button>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-number">1M+</span>
+            <span class="stat-label">Videos</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">50K+</span>
+            <span class="stat-label">Creators</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">10M+</span>
+            <span class="stat-label">Views</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="video-preview">
+          <div class="preview-player">
+            <img src="assets/hero-thumbnail.jpg" alt="Featured Video" class="preview-thumbnail">
+            <div class="play-overlay">
+              <mat-icon class="play-button">play_circle_filled</mat-icon>
             </div>
           </div>
-        </ng-container>
-        <ng-template #trendingSkeleton>
-          <div class="video-card skeleton" *ngFor="let i of [1,2,3,4,5,6]">
-            <div class="thumbnail-container skeleton-thumbnail"></div>
-            <div class="video-info">
-              <div class="channel-avatar skeleton-avatar"></div>
-              <div class="video-details">
-                <div class="skeleton-title"></div>
-                <div class="skeleton-channel"></div>
-                <div class="skeleton-meta"></div>
+        </div>
+        <div class="floating-elements">
+          <div class="element element-1">�</div>
+          <div class="element element-2">⭐</div>
+          <div class="element element-3">�</div>
+          <div class="element element-4">💎</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Enhanced Loading state -->
+  <div class="loading-container" *ngIf="loading">
+    <div class="spinner-container">
+      <div class="loading-animation">
+        <div class="pulse-ring"></div>
+        <div class="pulse-ring delay-1"></div>
+        <div class="pulse-ring delay-2"></div>
+        <mat-spinner [diameter]="60" class="main-spinner"></mat-spinner>
+      </div>
+      <div class="loading-text">
+        <h3>Curating Amazing Content</h3>
+        <p>Preparing personalized recommendations just for you</p>
+        <div class="loading-progress">
+          <div class="progress-bar"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Content when loaded -->
+  <ng-container *ngIf="!loading">
+    <!-- Enhanced Trending section -->
+    <section class="trending-section">
+      <div class="section-header">
+        <div class="section-title-wrapper">
+          <h2 class="section-title trending">
+            <div class="icon-wrapper">
+              <mat-icon>local_fire_department</mat-icon>
+            </div>
+            Trending Now
+            <span class="live-indicator">LIVE</span>
+          </h2>
+          <p class="section-subtitle">Most popular content right now</p>
+        </div>
+        <div class="section-actions">
+          <div class="filter-chips">
+            <mat-chip-set>
+              <mat-chip selected>All</mat-chip>
+              <mat-chip>Gaming</mat-chip>
+              <mat-chip>Music</mat-chip>
+              <mat-chip>Tech</mat-chip>
+            </mat-chip-set>
+          </div>
+          <button mat-button class="view-all-btn">
+            View All
+            <mat-icon>arrow_forward</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="video-grid trending-grid">
+        <!-- Show videos if available -->
+        <ng-container *ngIf="(trendingVideos$ | async) as trendingVideos">
+          <ng-container *ngIf="trendingVideos.length > 0; else trendingSkeleton">
+            <div class="video-card trending-card" *ngFor="let video of trendingVideos; let i = index">
+              <div class="card-rank">#{{ i + 1 }}</div>
+              <a [routerLink]="['/video', video.id]" class="thumbnail-container">
+                <img [src]="video.thumbnailURL" [alt]="video.title" class="thumbnail" loading="lazy">
+                <div class="thumbnail-overlay">
+                  <div class="play-button-wrapper">
+                    <mat-icon class="play-icon">play_circle_filled</mat-icon>
+                  </div>
+                  <div class="gradient-overlay"></div>
+                </div>
+                <span class="duration">{{ video.duration }}</span>
+                <div class="trending-badge">
+                  <mat-icon>trending_up</mat-icon>
+                  <span>HOT</span>
+                </div>
+                <div class="view-count-badge">
+                  {{ formatViewCount(video.stats.views) }} views
+                </div>
+              </a>
+              <div class="video-info">
+                <a [routerLink]="['/channel', video.userId]" class="channel-avatar">
+                  <img [src]="video.userPhotoURL || 'assets/default-avatar.png'" [alt]="video.userName">
+                  <div class="verified-badge" *ngIf="video.verified">
+                    <mat-icon>verified</mat-icon>
+                  </div>
+                  <div class="online-status" *ngIf="video.isLive"></div>
+                </a>
+                <div class="video-details">
+                  <a [routerLink]="['/video', video.id]" class="video-title">{{ video.title }}</a>
+                  <a [routerLink]="['/channel', video.userId]" class="channel-name">
+                    {{ video.userName }}
+                    <mat-icon class="verified-icon" *ngIf="video.verified">verified</mat-icon>
+                  </a>
+                  <div class="video-meta">
+                    <span class="views">{{ formatViewCount(video.stats.views) }} views</span>
+                    <span class="dot-separator">•</span>
+                    <span class="upload-time">{{ formatTimeAgo(video.createdAt) }}</span>
+                    <span class="dot-separator">•</span>
+                    <span class="likes">{{ formatViewCount(video.stats.likes) }} likes</span>
+                  </div>
+                  <div class="video-tags" *ngIf="video.tags && video.tags.length > 0">
+                    <span class="tag" *ngFor="let tag of video.tags.slice(0, 3)">#{{ tag }}</span>
+                  </div>
+                </div>
+                <div class="card-actions">
+                  <button mat-icon-button class="action-btn" [matMenuTriggerFor]="videoMenu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <button mat-icon-button class="action-btn like-btn">
+                    <mat-icon>favorite_border</mat-icon>
+                  </button>
+                  <button mat-icon-button class="action-btn share-btn">
+                    <mat-icon>share</mat-icon>
+                  </button>
+                </div>
+                <mat-menu #videoMenu="matMenu">
+                  <button mat-menu-item>
+                    <mat-icon>playlist_add</mat-icon>
+                    <span>Save to Watch Later</span>
+                  </button>
+                  <button mat-menu-item>
+                    <mat-icon>share</mat-icon>
+                    <span>Share</span>
+                  </button>
+                  <button mat-menu-item>
+                    <mat-icon>not_interested</mat-icon>
+                    <span>Not Interested</span>
+                  </button>
+                </mat-menu>
               </div>
             </div>
+          </ng-container>
+        </ng-container>
+        
+        <ng-template #trendingSkeleton>
+          <div class="empty-state trending-empty">
+            <div class="empty-icon">
+              <mat-icon>whatshot</mat-icon>
+              <div class="icon-glow"></div>
+            </div>
+            <h3>No Trending Videos Yet</h3>
+            <p>Be among the first creators to make it to trending!</p>
+            <button mat-raised-button color="primary" class="cta-button">
+              Upload Your Video
+            </button>
           </div>
         </ng-template>
       </div>
     </section>
-    <!-- Recommended section -->
+    
+    <!-- Categories Section -->
+    <section class="categories-section">
+      <div class="section-header">
+        <h2 class="section-title">
+          <mat-icon>category</mat-icon>
+          Browse by Category
+        </h2>
+      </div>
+      <div class="categories-grid">
+        <div class="category-card" *ngFor="let category of categories">
+          <div class="category-icon">{{ category.icon }}</div>
+          <h3 class="category-name">{{ category.name }}</h3>
+          <p class="category-count">{{ category.videoCount }} videos</p>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Latest Videos section -->
     <section class="recommended-section">
-      <h2 class="section-title">Recommended</h2>
+      <div class="section-header">
+        <h2 class="section-title recent">
+          <mat-icon>fiber_new</mat-icon>
+          Latest Videos
+        </h2>
+        <div class="filter-tabs">
+          <button mat-button [class.active]="selectedFilter === 'all'" (click)="setFilter('all')">All</button>
+          <button mat-button [class.active]="selectedFilter === 'today'" (click)="setFilter('today')">Today</button>
+          <button mat-button [class.active]="selectedFilter === 'week'" (click)="setFilter('week')">This Week</button>
+          <button mat-button [class.active]="selectedFilter === 'month'" (click)="setFilter('month')">This Month</button>
+        </div>
+      </div>
       <div class="video-grid recommended-grid">
-        <!-- Show skeleton if data is loading or empty -->
-        <ng-container *ngIf="(recommendedVideos$ | async)?.length; else recommendedSkeleton">
-          <div class="video-card" *ngFor="let video of recommendedVideos$ | async">
-            <a [routerLink]="['/watch', video.id]" class="thumbnail-container">
-              <img [src]="video.thumbnailURL" [alt]="video.title" class="thumbnail">
-              <span class="duration">{{ video.duration }}</span>
-            </a>
-            <div class="video-info">
-              <a [routerLink]="['/channel', video.userId]" class="channel-avatar">
-                <img [src]="video.userPhotoURL || 'assets/default-avatar.png'" [alt]="video.userName">
+        <!-- Show videos if available -->
+        <ng-container *ngIf="(recommendedVideos$ | async) as recommendedVideos">
+          <ng-container *ngIf="recommendedVideos.length > 0; else recommendedSkeleton">
+            <div class="video-card modern-card" *ngFor="let video of recommendedVideos">
+              <a [routerLink]="['/video', video.id]" class="thumbnail-container">
+                <img [src]="video.thumbnailURL" [alt]="video.title" class="thumbnail" loading="lazy">
+                <div class="thumbnail-overlay">
+                  <mat-icon class="play-icon">play_circle_filled</mat-icon>
+                </div>
+                <span class="duration">{{ video.duration }}</span>
+                <div class="video-actions">
+                  <button mat-icon-button class="action-btn" (click)="$event.stopPropagation(); addToWatchLater(video)">
+                    <mat-icon>watch_later</mat-icon>
+                  </button>
+                  <button mat-icon-button class="action-btn" (click)="$event.stopPropagation(); shareVideo(video)">
+                    <mat-icon>share</mat-icon>
+                  </button>
+                </div>
               </a>
-              <div class="video-details">
-                <a [routerLink]="['/watch', video.id]" class="video-title">{{ video.title }}</a>
-                <a [routerLink]="['/channel', video.userId]" class="channel-name">{{ video.userName }}</a>
-                <div class="video-meta">
-                  <span>{{ video.stats.views | number }} views</span>
-                  <span class="dot-separator">•</span>
-                  <span>{{ video.createdAt | date }}</span>
+              <div class="video-info">
+                <a [routerLink]="['/channel', video.userId]" class="channel-avatar">
+                  <img [src]="video.userPhotoURL || 'assets/default-avatar.png'" [alt]="video.userName">
+                  <div class="online-indicator" *ngIf="video.isLive"></div>
+                </a>
+                <div class="video-details">
+                  <a [routerLink]="['/video', video.id]" class="video-title">{{ video.title }}</a>
+                  <a [routerLink]="['/channel', video.userId]" class="channel-name">{{ video.userName }}</a>
+                  <div class="video-meta">
+                    <span class="views">{{ formatViewCount(video.stats.views) }} views</span>
+                    <span class="dot-separator">•</span>
+                    <span class="upload-time">{{ formatTimeAgo(video.createdAt) }}</span>
+                  </div>
+                  <div class="video-tags" *ngIf="video.tags && video.tags.length > 0">
+                    <span class="tag" *ngFor="let tag of video.tags.slice(0, 2)">#{{ tag }}</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </ng-container>
         </ng-container>
+        
         <ng-template #recommendedSkeleton>
-          <div class="video-card skeleton" *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12]">
-            <div class="thumbnail-container skeleton-thumbnail"></div>
-            <div class="video-info">
-              <div class="channel-avatar skeleton-avatar"></div>
-              <div class="video-details">
-                <div class="skeleton-title"></div>
-                <div class="skeleton-channel"></div>
-                <div class="skeleton-meta"></div>
-              </div>
+          <div class="empty-state recommended-empty">
+            <div class="empty-icon">
+              <mat-icon>video_library</mat-icon>
+              <div class="icon-glow"></div>
             </div>
+            <h3>No Videos Available</h3>
+            <p>Start your content journey by uploading your first video!</p>
+            <button mat-raised-button color="accent" class="cta-button">
+              <mat-icon>video_call</mat-icon>
+              Create Content
+            </button>
           </div>
         </ng-template>
       </div>
     </section>
   </ng-container>
+  
+  <!-- Simple Back to Top Button -->
+  <div class="back-to-top" 
+       onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+    <span>↑</span>
+  </div>
 </div>

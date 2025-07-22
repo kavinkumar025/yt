@@ -91,6 +91,59 @@ export class WatchComponent implements OnInit {
   //     }
   //   });
   // }
+
+  addComment(): void {
+    if (!this.commentText.trim() || !this.videoId) return;
+  
+    this.videoService.addComment(this.videoId, this.commentText).subscribe({
+      next: (commentId) => {
+        console.log('Comment added successfully with ID:', commentId);
+        this.commentText = ''; // Reset after adding comment
+        
+        // Reload comments to show the new one
+        this.videoService.getComments(this.videoId).subscribe(comments => {
+          this.comments = comments;
+        });
+        
+        // Update comment count in video data
+        if (this.videoData) {
+          this.videoData.stats.comments++;
+        }
+      },
+      error: (error) => {
+        console.error('Error adding comment:', error);
+      }
+    });
+  }
+
+  shareVideo(): void {
+    if (navigator.share) {
+      navigator.share({
+        title: this.videoData?.title || 'Check out this video!',
+        text: this.videoData?.description || '',
+        url: window.location.href
+      }).then(() => {
+        console.log('Video shared successfully');
+      }).catch((error) => {
+        console.error('Error sharing video:', error);
+        this.fallbackShare();
+      });
+    } else {
+      this.fallbackShare();
+    }
+  }
+
+  private fallbackShare(): void {
+    // Fallback for browsers that don't support Web Share API
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        console.log('URL copied to clipboard');
+        // You could show a toast notification here
+      }).catch((error) => {
+        console.error('Error copying to clipboard:', error);
+      });
+    }
+  }
   
 
   castScreen(): void {
