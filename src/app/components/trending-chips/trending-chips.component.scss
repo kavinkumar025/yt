@@ -1,0 +1,145 @@
+.trending-chips-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.chips-wrapper {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 8px 0;
+  flex: 1;
+  
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.trend-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: 25px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid rgba(102, 126, 234, 0.2);
+  color: #4a5568;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+    border-color: #667eea;
+  }
+  
+  &.selected {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    
+    &:hover {
+      box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+    }
+  }
+}
+
+.nav-arrows {
+  display: none;
+  gap: 8px;
+  margin-left: 16px;
+  
+  @media (max-width: 768px) {
+    display: flex;
+  }
+}
+
+.nav-arrow {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  color: #667eea;
+  
+  &:hover {
+    background: #667eea;
+    color: white;
+    transform: scale(1.05);
+  }
+  
+  mat-icon {
+    font-size: 20px;
+  }
+}
+
+// Animation for chips appearing
+.trend-chip {
+  animation: chipSlideIn 0.3s ease-out;
+}
+
+@keyframes chipSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .trending-chips-container {
+    margin-bottom: 16px;
+  }
+  
+  .chips-wrapper {
+    gap: 8px;
+  }
+  
+  .trend-chip {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+}
+
+// Dark theme support
+:host-context(.dark-theme) {
+  .trend-chip {
+    background: rgba(45, 55, 72, 0.9);
+    color: #e2e8f0;
+    border-color: rgba(102, 126, 234, 0.3);
+    
+    &:hover {
+      border-color: #667eea;
+    }
+    
+    &.selected {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+    }
+  }
+  
+  .nav-arrow {
+    background: rgba(45, 55, 72, 0.9);
+    color: #667eea;
+    
+    &:hover {
+      background: #667eea;
+      color: white;
+    }
+  }
+}

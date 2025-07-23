@@ -23,6 +23,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ToastrModule } from 'ngx-toastr';
 import { MatSelectModule } from '@angular/material/select';
 
@@ -42,6 +44,7 @@ import { CommonModule } from '@angular/common';
 import { LoginComponent } from './components/login/login.component';
 import { WatchComponent } from './components/watch/watch.component';
 import { VideoPlayerComponent } from './pages/video-player/video-player.component';
+import { GenerateVideoComponent } from './pages/generate-video/generate-video.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +55,8 @@ import { VideoPlayerComponent } from './pages/video-player/video-player.componen
     UploadModalComponent,
     LoginComponent,
     WatchComponent,
-    VideoPlayerComponent
+    VideoPlayerComponent,
+    GenerateVideoComponent
   ],
   imports: [
     BrowserModule,
@@ -76,6 +80,8 @@ import { VideoPlayerComponent } from './pages/video-player/video-player.componen
     MatTabsModule,
     MatDividerModule,
     MatTooltipModule,
+    MatChipsModule,
+    MatSnackBarModule,
     ToastrModule.forRoot({
       timeOut: 3000,
       positionClass: 'toast-bottom-right',

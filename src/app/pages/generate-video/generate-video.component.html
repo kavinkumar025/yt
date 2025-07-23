@@ -1,0 +1,280 @@
+<div class="generate-video-container">
+  <!-- Header Section -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="header-title">
+        <h1>
+          <mat-icon class="ai-icon">auto_awesome</mat-icon>
+          AI Video Generator
+          <span class="beta-tag">BETA</span>
+        </h1>
+        <p class="header-subtitle">Create stunning videos with AI using just text prompts and voice</p>
+      </div>
+      <div class="header-stats">
+        <div class="stat-card">
+          <span class="stat-number">10K+</span>
+          <span class="stat-label">Videos Created</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">Free</span>
+          <span class="stat-label">Forever</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="content-wrapper">
+    <!-- Generation Form -->
+    <div class="generation-section" *ngIf="!isGenerating && !generatedVideoUrl">
+      <form [formGroup]="generateForm" (ngSubmit)="generateVideo()">
+        <!-- Prompt Section -->
+        <div class="form-section">
+          <h3 class="section-title">
+            <mat-icon>description</mat-icon>
+            Video Prompt
+          </h3>
+          <div class="prompt-container">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Describe your video...</mat-label>
+              <textarea 
+                matInput 
+                formControlName="prompt" 
+                rows="4" 
+                placeholder="Example: A peaceful sunset over mountains with calm music, showing the beauty of nature"
+                maxlength="1000">
+              </textarea>
+              <mat-hint>{{ generateForm.get('prompt')?.value?.length || 0 }}/1000 characters</mat-hint>
+              <mat-error *ngIf="generateForm.get('prompt')?.hasError('required')">
+                Video prompt is required
+              </mat-error>
+              <mat-error *ngIf="generateForm.get('prompt')?.hasError('minlength')">
+                Prompt must be at least 10 characters long
+              </mat-error>
+            </mat-form-field>
+            
+            <!-- Example Prompts -->
+            <div class="example-prompts">
+              <h4>Quick Examples:</h4>
+              <div class="prompt-chips">
+                <mat-chip-set>
+                  <mat-chip 
+                    (click)="onPromptExample('A modern tech startup office with people working on laptops, innovative atmosphere with glass walls and city views')">
+                    Tech Office
+                  </mat-chip>
+                  <mat-chip 
+                    (click)="onPromptExample('Beautiful cooking tutorial showing step-by-step recipe preparation in a cozy kitchen')">
+                    Cooking Tutorial
+                  </mat-chip>
+                  <mat-chip 
+                    (click)="onPromptExample('Educational content about space exploration with stunning galaxy visuals and scientific facts')">
+                    Space Education
+                  </mat-chip>
+                  <mat-chip 
+                    (click)="onPromptExample('Peaceful meditation scene in a zen garden with bamboo sounds and flowing water')">
+                    Meditation
+                  </mat-chip>
+                </mat-chip-set>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Video Details -->
+        <div class="form-section">
+          <h3 class="section-title">
+            <mat-icon>video_settings</mat-icon>
+            Video Details
+          </h3>
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Video Title</mat-label>
+              <input matInput formControlName="title" placeholder="Enter video title">
+              <mat-error *ngIf="generateForm.get('title')?.hasError('required')">
+                Title is required
+              </mat-error>
+            </mat-form-field>
+            
+            <mat-form-field appearance="outline">
+              <mat-label>Duration (seconds)</mat-label>
+              <input matInput type="number" formControlName="duration" min="15" max="300">
+              <mat-hint>15-300 seconds</mat-hint>
+            </mat-form-field>
+          </div>
+          
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Description (Optional)</mat-label>
+            <textarea matInput formControlName="description" rows="2" maxlength="500"></textarea>
+            <mat-hint>{{ generateForm.get('description')?.value?.length || 0 }}/500 characters</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Voice Selection -->
+        <div class="form-section">
+          <h3 class="section-title">
+            <mat-icon>record_voice_over</mat-icon>
+            Voice Selection
+          </h3>
+          <div class="voice-grid">
+            <div 
+              class="voice-option" 
+              *ngFor="let voice of voiceOptions"
+              [class.selected]="generateForm.get('voice')?.value === voice.value"
+              (click)="generateForm.patchValue({voice: voice.value})">
+              <div class="voice-info">
+                <span class="voice-name">{{ voice.label }}</span>
+                <span class="voice-accent">{{ voice.accent }}</span>
+              </div>
+              <button mat-icon-button class="play-voice" type="button" (click)="playVoicePreview(voice.value)">
+                <mat-icon>{{ isPlayingVoice === voice.value ? 'stop' : 'play_arrow' }}</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Style Selection -->
+        <div class="form-section">
+          <h3 class="section-title">
+            <mat-icon>palette</mat-icon>
+            Visual Style
+          </h3>
+          <div class="style-grid">
+            <div 
+              class="style-option" 
+              *ngFor="let style of videoStyles"
+              [class.selected]="generateForm.get('style')?.value === style.value"
+              (click)="generateForm.patchValue({style: style.value})">
+              <div class="style-preview">
+                <mat-icon>{{ getStyleIcon(style.value) }}</mat-icon>
+              </div>
+              <div class="style-info">
+                <span class="style-name">{{ style.label }}</span>
+                <span class="style-desc">{{ style.description }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Generate Button -->
+        <div class="generate-actions">
+          <button 
+            mat-raised-button 
+            color="primary" 
+            type="submit" 
+            class="generate-btn"
+            [disabled]="generateForm.invalid">
+            <mat-icon>auto_awesome</mat-icon>
+            Generate Video
+            <span class="estimated-time">~{{ estimatedTime }}</span>
+          </button>
+          
+          <button mat-button type="button" (click)="resetForm()" class="reset-btn">
+            <mat-icon>refresh</mat-icon>
+            Reset Form
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Generation Progress -->
+    <div class="progress-section" *ngIf="isGenerating">
+      <div class="progress-container">
+        <div class="progress-header">
+          <h2>
+            <mat-icon class="spinning">sync</mat-icon>
+            Generating Your Video...
+          </h2>
+          <p>Please wait while AI creates your video. This usually takes {{ estimatedTime }}.</p>
+        </div>
+        
+        <div class="progress-bar-container">
+          <mat-progress-bar 
+            mode="determinate" 
+            [value]="generationProgress"
+            class="custom-progress">
+          </mat-progress-bar>
+          <span class="progress-text">{{ generationProgress.toFixed(0) }}%</span>
+        </div>
+        
+        <div class="generation-steps">
+          <div 
+            class="step-item" 
+            *ngFor="let step of generationSteps"
+            [class.active]="step.active"
+            [class.completed]="step.completed">
+            <div class="step-icon">
+              <mat-icon *ngIf="step.completed">check_circle</mat-icon>
+              <mat-icon *ngIf="step.active && !step.completed" class="spinning">sync</mat-icon>
+              <span *ngIf="!step.active && !step.completed" class="step-number">{{ step.step }}</span>
+            </div>
+            <div class="step-content">
+              <h4>{{ step.title }}</h4>
+              <p>{{ step.description }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Generated Video Result -->
+    <div class="result-section" *ngIf="generatedVideoUrl && !isGenerating">
+      <div class="result-container">
+        <div class="result-header">
+          <h2>
+            <mat-icon>check_circle</mat-icon>
+            Video Generated Successfully!
+          </h2>
+          <p>Your AI-generated video is ready. You can preview, download, or share it.</p>
+        </div>
+        
+        <div class="video-preview">
+          <video 
+            [src]="generatedVideoUrl" 
+            controls 
+            class="generated-video"
+            preload="metadata"
+            (error)="onVideoError($event)"
+            (loadeddata)="onVideoLoaded()">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        
+        <div class="video-actions">
+          <button mat-raised-button color="primary" (click)="downloadVideo()">
+            <mat-icon>download</mat-icon>
+            Download Video
+          </button>
+          
+          <button mat-stroked-button (click)="shareVideo()">
+            <mat-icon>share</mat-icon>
+            Share Video
+          </button>
+          
+          <button mat-button (click)="resetForm()">
+            <mat-icon>add</mat-icon>
+            Create Another
+          </button>
+        </div>
+        
+        <div class="video-info">
+          <div class="info-row">
+            <span class="label">Title:</span>
+            <span class="value">{{ generateForm.get('title')?.value }}</span>
+          </div>
+          <div class="info-row" *ngIf="generateForm.get('description')?.value">
+            <span class="label">Description:</span>
+            <span class="value">{{ generateForm.get('description')?.value }}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Duration:</span>
+            <span class="value">{{ generateForm.get('duration')?.value }} seconds</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Style:</span>
+            <span class="value">{{ getStyleLabel(generateForm.get('style')?.value) }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

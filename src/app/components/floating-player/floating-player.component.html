@@ -1,0 +1,21 @@
+<div class="floating-player" 
+     *ngIf="isVisible"
+     [ngStyle]="playerStyle"
+     (mousedown)="onMouseDown($event)">
+  
+  <div class="player-header">
+    <span class="player-title">{{ title }}</span>
+    <div class="player-controls">
+      <button class="control-btn" (click)="onExpand()" matTooltip="Expand">
+        <mat-icon>open_in_full</mat-icon>
+      </button>
+      <button class="control-btn close-btn" (click)="onClose()" matTooltip="Close">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+  
+  <div class="player-video">
+    <video [src]="videoUrl" controls class="floating-video"></video>
+  </div>
+</div>

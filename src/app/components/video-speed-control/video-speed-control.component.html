@@ -1,0 +1,20 @@
+<div class="speed-control" (clickOutside)="closeDropdown()">
+  <button class="speed-button" (click)="toggleDropdown()" [class.active]="isOpen">
+    <mat-icon>speed</mat-icon>
+    <span>{{ getSpeedLabel(currentSpeed) }}</span>
+    <mat-icon class="dropdown-icon" [class.rotated]="isOpen">expand_more</mat-icon>
+  </button>
+  
+  <div class="speed-dropdown" [class.open]="isOpen">
+    <div class="speed-list">
+      <button 
+        class="speed-option" 
+        *ngFor="let speed of availableSpeeds"
+        [class.selected]="speed === currentSpeed"
+        (click)="selectSpeed(speed)">
+        <span>{{ getSpeedLabel(speed) }}</span>
+        <mat-icon *ngIf="speed === currentSpeed">check</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>

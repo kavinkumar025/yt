@@ -1,0 +1,23 @@
+<div class="trending-chips-container">
+  <div class="chips-wrapper">
+    <button 
+      mat-chip 
+      *ngFor="let category of categories"
+      [class.selected]="selectedCategory === category.value"
+      (click)="selectCategory(category.value)"
+      class="trend-chip"
+    >
+      {{ category.label }}
+    </button>
+  </div>
+  
+  <!-- Navigation arrows for mobile -->
+  <div class="nav-arrows">
+    <button mat-icon-button class="nav-arrow prev">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+    <button mat-icon-button class="nav-arrow next">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+<div class="quality-selector" (clickOutside)="closeDropdown()">
+  <button class="quality-button" (click)="toggleDropdown()" [class.active]="isOpen">
+    <mat-icon>high_quality</mat-icon>
+    <span>{{ currentQuality }}</span>
+    <mat-icon class="dropdown-icon" [class.rotated]="isOpen">expand_more</mat-icon>
+  </button>
+  
+  <div class="quality-dropdown" [class.open]="isOpen">
+    <div class="quality-list">
+      <button 
+        class="quality-option" 
+        *ngFor="let quality of availableQualities"
+        [class.selected]="quality === currentQuality"
+        (click)="selectQuality(quality)">
+        <span>{{ quality }}</span>
+        <mat-icon *ngIf="quality === currentQuality">check</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>

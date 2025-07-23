@@ -1,0 +1,98 @@
+.fab-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1000;
+}
+
+.fab-main {
+  background: linear-gradient(135deg, #667eea, #764ba2) !important;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
+  }
+  
+  &.expanded {
+    transform: rotate(45deg);
+    background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+  }
+  
+  mat-icon {
+    transition: transform 0.3s ease;
+    
+    &.rotated {
+      transform: rotate(45deg);
+    }
+  }
+}
+
+.fab-actions {
+  position: absolute;
+  bottom: 70px;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  
+  .fab-action {
+    opacity: 0;
+    transform: translateY(20px) scale(0.8);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    
+    &:hover {
+      transform: translateY(0) scale(1.1);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+  }
+  
+  &.expanded {
+    .fab-action {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+}
+
+.fab-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: -1;
+  
+  &.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+// Mobile adjustments
+@media (max-width: 768px) {
+  .fab-container {
+    bottom: 16px;
+    right: 16px;
+  }
+  
+  .fab-main {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .fab-actions {
+    bottom: 60px;
+    
+    .fab-action {
+      width: 40px;
+      height: 40px;
+    }
+  }
+}

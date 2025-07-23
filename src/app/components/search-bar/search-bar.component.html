@@ -1,0 +1,29 @@
+<div class="search-container" [class.expanded]="isExpanded">
+  <div class="search-wrapper">
+    <button mat-icon-button class="search-icon" (click)="onSearch()">
+      <mat-icon>search</mat-icon>
+    </button>
+    
+    <input 
+      type="text" 
+      class="search-input"
+      [placeholder]="placeholder"
+      [(ngModel)]="searchTerm"
+      (keyup)="onKeyUp($event)"
+    >
+    
+    <button 
+      mat-icon-button 
+      class="clear-button" 
+      *ngIf="searchTerm" 
+      (click)="clearSearch()"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  
+  <!-- Voice search button -->
+  <button mat-icon-button class="voice-search" matTooltip="Voice search">
+    <mat-icon>mic</mat-icon>
+  </button>
+</div>

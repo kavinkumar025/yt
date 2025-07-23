@@ -4,6 +4,7 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { VideoPlayerComponent } from './pages/video-player/video-player.component';
 import { ProfileComponent } from './pages/profile/profile.component';
+import { GenerateVideoComponent } from './pages/generate-video/generate-video.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'subscriptions', component: HomeComponent },
   { path: 'library', component: HomeComponent },
   { path: 'history', component: HomeComponent },
+  { path: 'generate-video', component: GenerateVideoComponent },
   { path: 'video/:id', component: VideoPlayerComponent },
   { path: 'channel/:id', component: ProfileComponent },
   { path: 'search', component: HomeComponent },

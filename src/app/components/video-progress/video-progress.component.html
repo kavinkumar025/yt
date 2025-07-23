@@ -1,0 +1,28 @@
+<div class="video-progress-container">
+  <div class="progress-wrapper">
+    <div class="progress-bar" 
+         (click)="onProgressClick($event)"
+         (mousedown)="onMouseDown($event)"
+         (mousemove)="onMouseMove($event)"
+         (mouseup)="onMouseUp()"
+         (mouseleave)="onMouseUp()">
+      
+      <!-- Buffered Progress -->
+      <div class="progress-buffered" 
+           [style.width.%]="bufferedPercentage"></div>
+      
+      <!-- Play Progress -->
+      <div class="progress-played" 
+           [style.width.%]="progressPercentage">
+        <div class="progress-thumb" 
+             [class.dragging]="isDragging"></div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="time-display">
+    <span class="current-time">{{ formatTime(currentTime) }}</span>
+    <span class="divider">/</span>
+    <span class="duration">{{ formatTime(duration) }}</span>
+  </div>
+</div>

@@ -1,0 +1,130 @@
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 600px;
+  width: 100%;
+  
+  &.expanded {
+    .search-wrapper {
+      width: 100%;
+    }
+  }
+}
+
+.search-wrapper {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 25px;
+  border: 2px solid transparent;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  flex: 1;
+  
+  &:focus-within {
+    border-color: #667eea;
+    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.2);
+    transform: translateY(-2px);
+  }
+  
+  &:hover {
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.search-icon {
+  color: #667eea;
+  margin: 0 8px 0 12px;
+  
+  mat-icon {
+    font-size: 20px;
+  }
+}
+
+.search-input {
+  flex: 1;
+  padding: 14px 16px;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 16px;
+  color: #2d3748;
+  
+  &::placeholder {
+    color: #a0aec0;
+  }
+}
+
+.clear-button {
+  color: #a0aec0;
+  margin: 0 12px 0 8px;
+  
+  &:hover {
+    color: #667eea;
+  }
+  
+  mat-icon {
+    font-size: 18px;
+  }
+}
+
+.voice-search {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  box-shadow: 0 8px 15px rgba(102, 126, 234, 0.3);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(102, 126, 234, 0.4);
+  }
+  
+  mat-icon {
+    font-size: 20px;
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .search-container {
+    max-width: 100%;
+  }
+  
+  .search-wrapper {
+    min-width: 200px;
+  }
+  
+  .voice-search {
+    width: 40px;
+    height: 40px;
+    
+    mat-icon {
+      font-size: 18px;
+    }
+  }
+}
+
+// Dark theme support
+:host-context(.dark-theme) {
+  .search-wrapper {
+    background: rgba(45, 55, 72, 0.95);
+    
+    &:focus-within {
+      border-color: #667eea;
+    }
+  }
+  
+  .search-input {
+    color: #e2e8f0;
+    
+    &::placeholder {
+      color: #a0aec0;
+    }
+  }
+}

@@ -18,6 +18,12 @@
       <span *ngIf="expanded" class="item-text">Subscriptions</span>
     </a>
     
+    <a routerLink="/generate-video" routerLinkActive="active" class="sidebar-item ai-generate">
+      <mat-icon>auto_awesome</mat-icon>
+      <span *ngIf="expanded" class="item-text">Generate Video</span>
+      <span *ngIf="expanded" class="ai-badge">AI</span>
+    </a>
+    
     <ng-container *ngIf="(user$ | async)?.role === 'director' || (user$ | async)?.role === 'creator'">
       <a routerLink="/studio" routerLinkActive="active" class="sidebar-item">
         <mat-icon>video_library</mat-icon>

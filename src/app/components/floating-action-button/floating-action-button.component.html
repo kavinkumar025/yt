@@ -1,0 +1,30 @@
+<div class="fab-container">
+  <!-- Main FAB Button -->
+  <button class="fab-main" 
+          (click)="toggleMenu()" 
+          [class.expanded]="isExpanded"
+          mat-fab 
+          color="primary">
+    <mat-icon [class.rotated]="isExpanded">{{ isExpanded ? 'close' : 'add' }}</mat-icon>
+  </button>
+  
+  <!-- Action Items -->
+  <div class="fab-actions" [class.expanded]="isExpanded">
+    <button 
+      *ngFor="let action of actions; let i = index"
+      class="fab-action"
+      [style.transition-delay]="(i * 50) + 'ms'"
+      [style.background]="action.color || '#667eea'"
+      (click)="onActionClick(action.label)"
+      mat-mini-fab
+      [matTooltip]="action.label"
+      matTooltipPosition="left">
+      <mat-icon>{{ action.icon }}</mat-icon>
+    </button>
+  </div>
+  
+  <!-- Backdrop -->
+  <div class="fab-backdrop" 
+       [class.visible]="isExpanded" 
+       (click)="toggleMenu()"></div>
+</div>

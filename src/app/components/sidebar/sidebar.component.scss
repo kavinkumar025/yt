@@ -401,7 +401,61 @@
     padding: 20px 24px;
     
     .footer-links a {
-      font-size: 11px;
     }
+  }
+}
+
+// Special styling for AI Generate Video item
+.sidebar-item.ai-generate {
+  position: relative;
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.15), rgba(139, 92, 246, 0.15));
+  border: 1px solid rgba(236, 72, 153, 0.3);
+  
+  &::before {
+    background: linear-gradient(90deg, transparent, rgba(236, 72, 153, 0.2), transparent);
+  }
+  
+  &:hover {
+    background: linear-gradient(135deg, rgba(236, 72, 153, 0.25), rgba(139, 92, 246, 0.25));
+    border-color: rgba(236, 72, 153, 0.5);
+    box-shadow: 0 8px 32px rgba(236, 72, 153, 0.3);
+  }
+  
+  &.active {
+    background: linear-gradient(135deg, rgba(236, 72, 153, 0.4), rgba(139, 92, 246, 0.4));
+    border-color: rgba(236, 72, 153, 0.6);
+    
+    &::after {
+      background: linear-gradient(135deg, #ec4899, #8b5cf6);
+    }
+  }
+  
+  .mat-icon {
+    color: #ec4899;
+    animation: sparkle 2s ease-in-out infinite;
+  }
+  
+  .ai-badge {
+    background: linear-gradient(135deg, #ec4899, #8b5cf6);
+    color: white;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 8px;
+    margin-left: auto;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(236, 72, 153, 0.4);
+  }
+}
+
+@keyframes sparkle {
+  0%, 100% { 
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% { 
+    transform: scale(1.1);
+    filter: brightness(1.3);
   }
 }
